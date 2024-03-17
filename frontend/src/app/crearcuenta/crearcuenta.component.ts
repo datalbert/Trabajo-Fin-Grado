@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-inicio',
+  selector: 'app-crearcuenta',
   standalone: true,
   imports: [RouterModule],
-  templateUrl: './inicio.component.html',
-  styleUrl: './inicio.component.css'
+  templateUrl: './crearcuenta.component.html',
+  styleUrl: './crearcuenta.component.css'
 })
-export class InicioComponent {
+export class CrearcuentaComponent {
 
 }

@@ -1,1 +1,128 @@
-<p>inicio works!</p>
+<header data-bs-theme="dark">
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+      <div class="container">
+        <a href="#" class="navbar-brand d-flex align-items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+          <strong>RentaMov</strong>
+        </a>
+        <div class="text-end">
+            <a class="btn btn-primary" routerLink="/crear-usuario" routerLinkActive="active" ariaCurrentWhenActive="page" >Crear Cuenta</a>
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+              Iniciar Sesión
+            </button>            
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <main>
+
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-header p-5 pb-4 border-bottom-0">
+        <h1 class="fw-bold mb-0 fs-2">Inicie sesión</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body p-5 pt-0">
+        <form class="">
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control rounded-3" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Email </label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="password" class="form-control rounded-3" id="floatingPassword" placeholder="Password">
+            <label for="floatingPassword">Contraseña</label>
+          </div>
+          <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Iniciar Sesión</button>
+          <hr class="my-4">
+          <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-3" type="submit">
+            <svg class="bi me-1" width="16" height="16"><use xlink:href="#google"></use></svg>
+            Inicie Sesión con Google
+          </button>
+          <button class="w-100 py-2 mb-2 btn btn-outline-primary rounded-3" type="submit">
+            <svg class="bi me-1" width="16" height="16"><use xlink:href="#facebook"></use></svg>
+            Inicie Sesión con  Facebook
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+    <section class="py-5 text-center container">
+      <div class="row py-lg-5 align-items-center">
+        <div class="col-lg-6 col-md-8 mx-auto">
+          <div class="row align-items-center">
+            <div class="col">
+              <h1 class="fw-light">RentaMov</h1>
+              <p class="lead text-body-secondary">Alquila por horas, mueve tu vida</p>
+              
+            </div>
+            <div class="col">
+              <img id="imagen_inicio" src="../assets/icono_inicio.png" alt="RentaMov icon" width="400" height="200">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+   
+    
+  </main>
+  <footer>
+      <div class="container">
+          <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
+            <div class="col mb-3">
+              <a href="/" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none">
+                <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+              </a>
+              <p class="text-body-secondary">© 2024</p>
+            </div>
+        
+            <div class="col mb-3">
+        
+            </div>
+        
+            <div class="col mb-3">
+              <h5>Section</h5>
+              <ul class="nav flex-column">
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
+              </ul>
+            </div>
+        
+            <div class="col mb-3">
+              <h5>Section</h5>
+              <ul class="nav flex-column">
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
+              </ul>
+            </div>
+        
+            <div class="col mb-3">
+              <h5>Contáctenos</h5>
+              <ul class="nav flex-column">
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
+              </ul>
+            </div>
+          </footer>
+        </div>
+  
+  
+  
+  </footer>
