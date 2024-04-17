@@ -3,30 +3,30 @@
 <div class="container">
 
     <h2>Crear Cuenta</h2>
-    <form class="row g-3">
+    <form class="row g-3" (ngSubmit)="onSubmit()" #userForm="ngForm">
         <div class="col-md-6">
           <label for="inputName" class="form-label">Nombre</label>
-          <input type="text" class="form-control" id="inputName">
+          <input type="text" class="form-control" id="inputName" [(ngModel)]="model.nombre" name="nombre">
         </div>
         <div class="col-md-6">
           <label for="inputLastName" class="form-label">Apellidos</label>
-          <input type="text" class="form-control" id="inputLastName">
+          <input type="text" class="form-control" id="inputLastName" [(ngModel)]="model.apellidos" name="apellidos">
         </div>
         <div class="col-md-6">
           <label for="inputEmail4" class="form-label">Email</label>
-          <input type="email" class="form-control" id="inputEmail4">
+          <input type="email" class="form-control" id="inputEmail4" [(ngModel)]="model.email" name="email">
         </div>
         <div class="col-md-6">
           <label for="inputPassword4" class="form-label">Contraseña</label>
-          <input type="password" class="form-control" id="inputPassword4">
+          <input type="password" class="form-control" id="inputPassword4" [(ngModel)]="model.contrasena" name="password">
         </div>
         <div class="col-12">
           <label for="inputAddress" class="form-label">Dirección</label>
-          <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+          <input type="text" class="form-control" id="inputAddress" placeholder="Paseo de la Castellana" [(ngModel)]="model2.direccion" name="=direccion">
         </div>
         <div class="col-md-6">
           <label for="inputCity" class="form-label">Ciudad</label>
-          <input type="text" class="form-control" id="inputCity">
+          <input type="text" class="form-control" id="inputCity" [(ngModel)]="model2.ciudad" name="ciudad">
         </div>
         <div class="col-md-4">
           <label for="inputState" class="form-label">Provincia</label>
@@ -38,7 +38,7 @@
         </div>
         <div class="col-md-2">
           <label for="inputZip" class="form-label">Codigo postal</label>
-          <input type="text" class="form-control" id="inputZip">
+          <input type="text" class="form-control" id="inputZip" [(ngModel)]="model2.codigo_postal"   disabled name="codigo_postal">
         </div>
         <div class="col-12">
           <button type="submit" id="boton-inicio" class="btn btn-primary">Crear Cuenta</button>
@@ -50,4 +50,6 @@
 
 
 </div>
+
+
 

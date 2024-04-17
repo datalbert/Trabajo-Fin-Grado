@@ -1,0 +1,33 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button aria-label="Menu icon" (click)="toggleMenu()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <h1>Bienvenido a RentaMov alquileres:</h1>
+</mat-toolbar>
+<mat-sidenav-container autosize="true">
+  <mat-sidenav [ngClass]="!isCollapsed ? 'expanded' : ''" [mode]="isMobile ? 'over' : 'side'" [opened]="isMobile ? 'false' : 'true'">
+    <mat-nav-list>
+      <a mat-list-item routerLink="perfil" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <span class="entry">
+          <mat-icon>account_box</mat-icon>
+          <span *ngIf="!isCollapsed">Perfil</span>
+        </span>
+      </a>
+      <a mat-list-item routerLink="crear-usuario">
+          <span class="entry">
+            <mat-icon>house</mat-icon>
+            <span *ngIf="!isCollapsed">Crear Cuenta</span>
+          </span>
+      </a>
+      <a mat-list-item routerLink="inventario">
+        <span class="entry">
+          <mat-icon>directions_car</mat-icon>
+          <span *ngIf="!isCollapsed">Inventario</span>
+        </span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
