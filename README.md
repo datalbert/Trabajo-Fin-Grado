@@ -29,7 +29,7 @@ La aplicación sigue una arquitectura de cliente-servidor, donde el cliente es u
 
 La aplicación sigue un patrón de arquitectura de tres capas:
 
-1. **Capa de Presentación**: Esta capa consiste en la interfaz de usuario de la aplicación web, desarrollada utilizando React.js y Material-UI. Aquí se encuentran las diferentes vistas y componentes de la aplicación que permiten a los usuarios buscar, reservar y gestionar sus alquileres de vehículos.
+1. **Capa de Presentación**: Esta capa consiste en la interfaz de usuario de la aplicación web, desarrollada utilizando Angular y Material-UI. Aquí se encuentran las diferentes vistas y componentes de la aplicación que permiten a los usuarios buscar, reservar y gestionar sus alquileres de vehículos.
 
 2. **Capa de Lógica de Negocio**: En esta capa, se encuentran los controladores y servicios que gestionan la lógica de negocio de la aplicación, como la gestión de usuarios, la reserva de vehículos y la interacción con la base de datos. Estos componentes están desarrollados utilizando Node.js y Express.js.
 
@@ -37,9 +37,6 @@ La aplicación sigue un patrón de arquitectura de tres capas:
 
 ### Patrones de Diseño Utilizados
 
-- **MVC (Modelo-Vista-Controlador)**: Se utiliza para separar las responsabilidades de la aplicación en modelos (datos), vistas (interfaz de usuario) y controladores (lógica de negocio), lo que facilita la modularidad y el mantenimiento del código.
-
-- **Inyección de Dependencias**: Se implementa para facilitar la gestión de dependencias y mejorar la modularidad del código, permitiendo una fácil sustitución de componentes.
 
 ### Escalabilidad y Mantenimiento
 
