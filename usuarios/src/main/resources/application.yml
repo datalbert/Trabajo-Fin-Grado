@@ -1,9 +1,10 @@
-server:
-    port: 8080
-    
 spring:
+    application:
+        name: "usuarios"
+    config:
+        import: "optional:configserver:http://localhost:8888/"
     datasource:
-        url: jdbc:mysql://localhost:3306/usuarios_servicio
+        url: jdbc:mysql://localhost:3306/usuariosdb
         username: root
         password: root
         driver-class-name: com.mysql.cj.jdbc.Driver
@@ -11,6 +12,19 @@ spring:
         hibernate:
             ddl-auto: update
         show-sql: true
+
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+        defaultZone: http://localhost:8070/eureka/
+
+
+
 
 
 

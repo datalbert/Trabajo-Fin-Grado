@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { Usuario } from '../objetos/Usuario';
 import { Usuario2 } from '../objetos/Usuario2';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
-import { UsuariosService } from '../usuarios.service';
+import { UsuariosService } from '../servicios/usuarios.service';
 
 @Component({
   selector: 'app-crearcuenta',

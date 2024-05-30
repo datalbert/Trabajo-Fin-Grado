@@ -1,0 +1,64 @@
+services:
+  
+  configserver:
+    image: "datalbert/configservertfg:1.0"
+    container_name: configserver-ms
+    ports:
+      - "8888:8888"
+    
+  eurekaserver:
+    image: "datalbert/eurekaservertfg:1.0"
+    container_name: eurekaserver-ms
+    ports:
+      - "8070:8070"
+    depends_on:
+      - configserver
+    networks:
+      - trabajo_final
+
+  gatewayserver:
+    image: "datalbert/gatewayservertfg:1.0"
+    container_name: gatewayserver-ms
+    ports:
+      - "8071:8071"
+    depends_on:
+      - eurekaserver
+    networks:
+      - trabajo_final
+
+  
+  
+  usuarios:
+    image: "datalbert/usuariostfg:1.0"
+    container_name: usuarios-ms
+    ports:
+      - "8085:8085"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - trabajo_final
+  inventario:
+    image: "datalbert/inventariotfg:1.0"
+    container_name: inventario-ms
+    ports:
+      - "8081:8081"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - trabajo_final
+  reservas:
+    image: "datalbert/reservastfg:1.0"
+    container_name: reservas-ms
+    ports:
+      - "8082:8082"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - trabajo_final
+  

@@ -3,8 +3,9 @@ import { HttpClientModule,HttpClient } from '@angular/common/http';
 import { Component, Injector } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule,Router, ActivatedRoute } from '@angular/router';
-import { UsuariosService } from '../usuarios.service';
+import { UsuariosService } from '../servicios/usuarios.service';
 import { Usuario2 } from '../objetos/Usuario2';
+import { ChangeDetectorRef } from '@angular/core';
 
 
 
@@ -24,28 +25,24 @@ export class InicioComponent {
   errorMessage: string | null = null;
 
 
-  constructor(private usuariosService: UsuariosService,private router:Router,private route:ActivatedRoute) { }
+  constructor(private usuariosService: UsuariosService,private router:Router ) { }
 
 
   onSubmit() {
-    // Aquí puedes utilizar this.email y this.password para obtener los valores del formulario
-    // Luego, puedes llamar a un método del servicio UsuariosServicio para realizar alguna acción, como iniciar sesión
-
     this.usuariosService.getUsuarios(this.email, this.password)
       .subscribe(
         response => {
-            this.usuarios = response.usuario;
-          
-            //this.router.navigate(['inicio_app']);
-            
-            this.router.navigate(['inicio_app'], { relativeTo: this.route });
-          
+          this.usuarios = response.usuario;
+          this.router.navigate(['/inicio_app']); // Fix: Pass a string instead of an array
         },
         error => {
           console.error('Ocurrió un error:', error);
           this.errorMessage = 'El usuario o la contraseña son incorrectos.';
-          //this.router.navigate(['/']);
         }
       );
+  }
+
+  gotoinicio(){
+    this.router.navigate(['/inicio_app']);
   }
 }

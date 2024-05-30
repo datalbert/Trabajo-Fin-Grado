@@ -13,11 +13,22 @@ public class UsuariosDTO {
 
     private String apellidos;
 
-    private int telefonoContacto;
+    private String password;
+
+    private String email;
+
+    private String direccion;
+
+    private int codigopostal;
+
+    private int numerotelefono;
 
     private String dni;
 
-    private String email;
+    private String rol;
+
+
+
 
 
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Usuario2 } from './objetos/Usuario2';
+import { Usuario2 } from '../objetos/Usuario2';
 import { Observable, of, throwError} from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { MessageService } from './message.service';
@@ -12,7 +12,7 @@ export class UsuariosService {
 
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
-  private usuariosUrl = 'http://localhost:8080/usuario';
+  private usuariosUrl = 'http://localhost:8085/usuario';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

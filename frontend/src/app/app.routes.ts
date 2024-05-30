@@ -7,6 +7,7 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { InventarioComponent } from './inventario/inventario.component';
 import { AgregarVehiculoComponent } from './agregar-vehiculo/agregar-vehiculo.component';
 import { ListaVehiculosComponent } from './lista-vehiculos/lista-vehiculos.component';
+import { BusquedaComponent } from './busqueda/busqueda.component';
 
 export const routes: Routes = [
 
@@ -15,8 +16,10 @@ export const routes: Routes = [
         path: 'inicio_app', 
         component: PrincipalComponent,
         children: [
+          { path: '', redirectTo: 'perfil', pathMatch: 'full'},
           { path: 'perfil', component: PerfilComponent },
           { path: 'crear-usuario', component: CrearcuentaComponent },
+          { path: 'busqueda', component: BusquedaComponent},
           { path: 'inventario', component:InventarioComponent,
             children: [
               { path: 'agregar_vehiculo', component: AgregarVehiculoComponent },
@@ -25,5 +28,6 @@ export const routes: Routes = [
           }
 
         ]
-      }
+      },
+      { path: 'contacto', component: FormulariocontactoComponent}
 ];

@@ -3,39 +3,47 @@
 
 <div class="container">
 
-<form class="row g-3">
+<form class="row g-3" (ngSubmit)="onSubmit()" #useForm="ngForm" enctype="multipart/form-data">
     <div class="col-md-4">
       <label for="inputEmail4" class="form-label">Marca</label>
-      <input type="text" class="form-control" id="inputEmail4">
+      <input type="text" class="form-control" id="inputMarca" [(ngModel)]="nuevocoche.marca" name="marca">
     </div>
     <div class="col-md-6">
       <label for="inputPassword4" class="form-label">Modelo</label>
-      <input type="password" class="form-control" id="inputPassword4">
+      <input type="text" class="form-control" id="inputModelo" [(ngModel)]="nuevocoche.modelo" name="modelo">
     </div>
     <div class="col-md-4">
       <label for="inputAddress" class="form-label">Matricula</label>
-      <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+      <input type="text" class="form-control" id="inputMatricula" placeholder="1234KLV" [(ngModel)]="nuevocoche.matricula" name="matricula">
     </div>
     <div class="col-md-4">
       <label for="inputAddress2" class="form-label">Combustible</label>
-      <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-    </div>
-    <div class="col-md-4">
-      <label for="inputCity" class="form-label">Transmisión</label>
-      <input type="text" class="form-control" id="inputCity">
-    </div>
-    <div class="col-md-4">
-      <label for="inputState" class="form-label">State</label>
-      <select id="inputState" class="form-select">
-        <option selected>Choose...</option>
-        <option>...</option>
+      <select id="inputCombustible" class="form-select" [(ngModel)]="nuevocoche.combustible" name="combustible" >
+        <option selected>Gasolina</option>
+        <option>Diesel</option>
+        <option>Electrico</option>
+        <option>Gas</option>
+        <option>Híbrido</option>
       </select>
     </div>
+    <div class="col-md-4">
+      <label for="inputTransmision" class="form-label">Transmisión</label>
+      <select id="inputTransmision" class="form-select" [(ngModel)]="nuevocoche.transmision" name="trasnmision">
+        <option selected>Delantera</option>
+        <option>Trasera</option>
+        <option>4x4</option>
+      </select>
+    </div>
+    <div class="col-md-4">
+      <label for="inputnumasientos" class="form-label">Num Asientos</label>
+      <input type="text" class="form-control" id="inputnumasientos" [(ngModel)]="nuevocoche.numasientos" name="numasientos">
+    </div>
     <div class="col-md-6">
-        <input type="file" class="form-control" id="inputGroupFile01">
+        <label for="inputfoto" class="form-label">Fotos</label>
+        <input type="file" class="form-control" id="inputfoto" [(ngModel)]="fotos" name="fotos" accept="image/*" (change)="onFileSelected($event)">
       </div>
     <div class="col-12">
-      <button type="submit" class="btn btn-primary">Sign in</button>
+      <button type="submit" class="btn btn-primary">Crear</button>
     </div>
   </form>
 </div>

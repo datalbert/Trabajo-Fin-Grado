@@ -11,35 +11,35 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity(name = "usuarios")
+@Entity
+@Table(name = "usuarios")
 @Getter @Setter @ToString @AllArgsConstructor @NoArgsConstructor
 public class Usuarios {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    @Column(name = "nombre")
+    private int idUsuarios;
+
     private String nombre;
 
-    @Column(name = "apellidos")
     private String apellidos;
 
-    @Column(name = "dni")
-    private String dni;
+    private String password;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "contrasena")
-    private String contrasena;
+    private String direccion;
 
-    @Column(name = "telefono")
-    private int telefono;
+    private int codigopostal;
+
+    private int numerotelefono;
+
+    private String dni;
 }

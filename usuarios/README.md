@@ -27,4 +27,5 @@ Permiso_de_conducir (ruta o referencia a la imagen en tu sistema de archivos o u
 Teléfono_de_contacto
 
 
+Para ver la documentacion de la api acceder a esta web http://localhost:8080/swagger-ui/index.html
 

@@ -10,6 +10,10 @@ public class UsuariosConstant {
     public static final String HTTP_STATUS_OK = "200";
     public static final String HTTP_STATUS_OK_MESSAGE = "OK";
 
+    public static final String HTTP_USER_NOT_EXIST = "El usuario no existe en el sistema";
+
+    public static final String HTTP_USER_INCORRECT= "El usuario o la contraseña son incorrectos";
+
     public static final String HTTP_STATUS_BAD_REQUEST = "400";
     public static final String HTTP_STATUS_BAD_REQUEST_MESSAGE = "Bad Request";
 

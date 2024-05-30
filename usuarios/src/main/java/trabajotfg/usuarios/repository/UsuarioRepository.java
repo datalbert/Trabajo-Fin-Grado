@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import trabajotfg.usuarios.entity.Usuarios;
 
 @Repository
-public interface UsuarioRepository  extends JpaRepository<Usuarios, Long>{
+public interface UsuarioRepository  extends JpaRepository<Usuarios, Integer>{
+
+    Usuarios findByEmail(String email);
 
 }
