@@ -32,8 +32,7 @@ public class Coches {
 
     private String matricula;
 
-    @Lob
-    private byte[] fotos;
+    private String urlfotos;
 
     private String combustible;
 

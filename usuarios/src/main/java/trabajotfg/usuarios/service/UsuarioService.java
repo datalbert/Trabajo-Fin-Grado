@@ -1,5 +1,7 @@
 package trabajotfg.usuarios.service;
 
+import java.util.List;
+
 import trabajotfg.usuarios.dto.UsuariosDTO;
 import trabajotfg.usuarios.entity.Usuarios;
 import trabajotfg.usuarios.entity.UsuariosRol;
@@ -10,6 +12,10 @@ public interface UsuarioService  {
     void crearUsuario(UsuariosDTO usuarionuevo);
 
     UsuariosDTO buscarUsuario(String email, String password);
+
+    List<UsuariosDTO> obtenerUsuarios();
+
+    void eliminarUsuario(int id);
 
     
 

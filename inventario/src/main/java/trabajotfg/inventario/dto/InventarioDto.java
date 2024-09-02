@@ -13,7 +13,7 @@ public class InventarioDto {
     
     private String matricula;
     
-    private String fotos;
+    private String urlfotos;
     
     private String combustible;
     
@@ -22,6 +22,10 @@ public class InventarioDto {
     private int numAsientos;
     
     private int idPropietario;
+
+    private String latitud;
+
+    private String longitud;
 
 
 }

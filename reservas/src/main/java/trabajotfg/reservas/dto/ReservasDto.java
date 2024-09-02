@@ -15,6 +15,10 @@ public class ReservasDto {
 
     private String fechaFin;
 
+    private String horaInicio;
+
+    private String horaFin;
+
     private String estado;
 
 

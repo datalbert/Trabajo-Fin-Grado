@@ -12,7 +12,7 @@ public class InventarioMapped {
         entity.setMarca(dto.getMarca());
         entity.setModelo(dto.getModelo());
         entity.setMatricula(dto.getMatricula());
-        //entity.setFotos(dto.getFotos());
+        entity.setUrlfotos(dto.getUrlfotos());
         entity.setCombustible(dto.getCombustible());
         entity.setTransmision(dto.getTransmision());
         entity.setNumAsientos(dto.getNumAsientos());
@@ -26,7 +26,7 @@ public class InventarioMapped {
         dto.setMarca(entity.getMarca());
         dto.setModelo(entity.getModelo());
         dto.setMatricula(entity.getMatricula());
-        //dto.setFotos(Base64.getEncoder().encodeToString(entity.getFotos()));
+        dto.setUrlfotos(entity.getUrlfotos());
         dto.setCombustible(entity.getCombustible());
         dto.setTransmision(entity.getTransmision());
         dto.setNumAsientos(entity.getNumAsientos());

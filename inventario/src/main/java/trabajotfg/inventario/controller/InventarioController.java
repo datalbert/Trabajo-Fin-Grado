@@ -1,17 +1,21 @@
 package trabajotfg.inventario.controller;
 
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
+
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.ws.rs.client.Entity;
 import lombok.AllArgsConstructor;
 import trabajotfg.inventario.constant.InventarioConstant;
+import trabajotfg.inventario.dto.EntityDTO;
 import trabajotfg.inventario.dto.InventarioDto;
 import trabajotfg.inventario.dto.ResponseDTO;
 import trabajotfg.inventario.entity.Coches;
+import trabajotfg.inventario.mapped.InventarioMapped;
 import trabajotfg.inventario.services.InventarioService;
+import trabajotfg.inventario.services.clients.GpsClient;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +27,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,60 +36,55 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
 
 @RestController
-@RequestMapping("inventario")
+@RequestMapping
 @Tag(name = "Inventario", description = "API para la Gestión de Inventario")
 @AllArgsConstructor
 public class InventarioController {
 
     private InventarioService inventarioService;
 
+    private GpsClient gpsClient;
+
 
     @Operation(summary = "Insertar un nuevo coche")
     @ApiResponse(responseCode = "201", description = "Coche insertado correctamente")
     @PostMapping("/nuevoCoche")
-    public ResponseEntity<ResponseDTO> insertarNuevocoche(@RequestPart("nuevocoche")InventarioDto nuevocoche, @RequestParam("fotos") MultipartFile imageFile) throws IOException{
+    public ResponseEntity<ResponseDTO> insertarNuevocoche(@RequestPart("nuevocoche")InventarioDto nuevocoche) throws IOException{
         //TODO: process POST request
 
         //cuando se inserta un nuevo coche se debe modificar tambien el estado del coche
-        inventarioService.insertarCoche(nuevocoche, imageFile);
+        inventarioService.insertarCoche(nuevocoche);
+
+        //con eureka llamar a la api de gps para crear la entidad del coche en la tabla de gps
+        EntityDTO entity = new EntityDTO();
+        entity.setMatricula(nuevocoche.getMatricula());
+        entity.setLatitud(nuevocoche.getLatitud());
+        entity.setLongitud(nuevocoche.getLongitud());
+        gpsClient.crearEntidad(entity);
+
+        
         
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDTO(InventarioConstant.HTTP_STATUS_CREATED, InventarioConstant.HTTP_STATUS_CREATED_MESSAGE));
     }
 
     
-    @Operation(summary = "Obtener la imagen de un coche del inventario")
-    @ApiResponse(responseCode = "200", description = "Devuelve la imagen en formato Byte[] del coche seleccionado")
-    @GetMapping("/obtenerImagen")
-    public ResponseEntity<?> obtenerImagen(@RequestParam("id") int id){
+    @GetMapping("/{id}")
+    public ResponseEntity<InventarioDto> obtenerCochePorId (@PathVariable("id")  int id) {
 
-        Coches coche = inventarioService.obtenerCoche(id);
 
-        byte[] imageData= coche.getFotos();
+        InventarioDto coche = InventarioMapped.maptoDto(inventarioService.obtenerCoche(id), new InventarioDto());
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.valueOf(IMAGE_JPEG_VALUE))
-                .body(imageData);
-
+        return ResponseEntity.status(HttpStatus.OK).body(coche);
     }
-
-    @GetMapping("/obtenerImagen2")
-    public ResponseEntity<?> obtenerImagen2(@RequestParam("id") int id) {
-        Coches coche = inventarioService.obtenerCoche(id);
-        byte[] imageData = coche.getFotos();
-
-        // Convertir los bytes de la imagen a una cadena Base64
-        String imageDataBase64 = Base64.getEncoder().encodeToString(imageData);
-
-        // Devolver la cadena Base64 como parte de la respuesta
-        return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.valueOf("image/jpeg"))
-                .body(imageDataBase64);
-    }
+    
+    
 
     @Operation(summary = "Obtener todos los coches del inventario")
     @ApiResponse(responseCode = "200", description = "Lista de coches obtenida correctamente")
@@ -118,6 +118,16 @@ public class InventarioController {
   
     }
 
+    @PutMapping
+    public  ResponseEntity<ResponseDTO> actualizarCoche(@RequestBody InventarioDto nuevocoche) throws IOException{
+        //TODO: process PUT request
+
+        inventarioService.actualizarCoche(nuevocoche);
+        
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(InventarioConstant.HTTP_STATUS_OK, InventarioConstant.HTTP_VEHICULE_CHANGE));
+    }
+
+    //@CrossOrigin
     @Operation(summary = "Eliminar un coche del inventario")
     @ApiResponse(responseCode = "200", description = "Coche eliminado correctamente")
     @DeleteMapping("/eliminarCoche/{id}") 

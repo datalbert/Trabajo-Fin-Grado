@@ -11,6 +11,9 @@ public class InventarioConstant {
     public static final String HTTP_RECURSE_DELETED= "Recurso eliminado correctamente";
 
 
+    public static final String HTTP_VEHICULE_CHANGE= "Vehiculo modificado correctamente";
+
+
     public static final String HTTP_USER_INCORRECT= "El usuario o la contraseña son incorrectos";
 
     public static final String HTTP_STATUS_BAD_REQUEST = "400";

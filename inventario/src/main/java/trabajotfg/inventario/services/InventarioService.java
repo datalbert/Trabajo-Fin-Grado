@@ -12,15 +12,16 @@ import trabajotfg.inventario.entity.Coches;
 
 public interface InventarioService {
 
-    void insertarCoche(InventarioDto cochenuevo,MultipartFile imagen) throws IOException;
+    void insertarCoche(InventarioDto cochenuevo) throws IOException;
 
     void eliminarCoche(int id);
 
     Coches obtenerCoche(int id);
 
+    void actualizarCoche(InventarioDto coche);
+
     List<InventarioDto> obtenerCoches();
 
-    void insertarFoto(MultipartFile foto) throws IOException;
 
     List<InventarioDto> obtenerDisponibles();
 

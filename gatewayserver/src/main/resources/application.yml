@@ -1,11 +1,72 @@
 spring:
     application:
         name: gatewayserver
+    profiles:
+        active: dev
     config:
-        import: optional:configserver:http://localhost:8888
+        import: "optional:configserver:http://localhost:8888/"
+        #import: "optional:configserver:http://configserver-ms:8888/"
     cloud:
         gateway:
             discovery:
                 locator:
                     enabled: false
                     lower-case-service-id: true
+    main:
+        #web-application-type: reactive
+        allow-bean-definition-overriding: true
+
+
+logging:
+    level:
+        org.springframework.cloud.gateway: DEBUG
+        org.springframework.web: ERROR
+        reactor.netty: DEBUG
+
+##springdoc:
+    ##group-configs:
+      ##  0:
+        ##    group: "default"
+          ##  display-name: "Default"
+          ##  paths-to-match: "/tfg/inventario/v3/api-docs"
+        
+      ##  1:
+        ##    group: "admin"
+          ##  display-name: "Admin"
+          ##  paths-to-match: "/admin/**"
+springdoc:
+    enable-native-support: true
+    api-docs:
+        groups:
+            enabled: true
+    group-configs:
+        0:
+            group: "inventario"
+            display-name: "Inventario"
+            paths-to-match: "/tfg/inventario/*"
+        1:
+            group: "reservas"
+            display-name: "Reservas"
+            paths-to-match: "/tfg/reservas/*"
+    swagger-ui:
+        config-url: /v3/api-docs/swagger-config
+        url: /v3/api-docs
+        urls:
+            0:
+                name: Inventario
+                url: http://localhost:8081/v3/api-docs/inventario
+            1:
+                name: Reservas
+                url: /v3/api-docs/reservas
+
+       
+
+            
+            
+
+
+                
+    
+    
+                        
+            

@@ -1,17 +1,12 @@
 spring:
     application:
         name: "usuarios"
+    profiles:
+        active: dev
     config:
+        #import: "optional:configserver:http://configserver-ms:8888/"
         import: "optional:configserver:http://localhost:8888/"
-    datasource:
-        url: jdbc:mysql://localhost:3306/usuariosdb
-        username: root
-        password: root
-        driver-class-name: com.mysql.cj.jdbc.Driver
-    jpa:
-        hibernate:
-            ddl-auto: update
-        show-sql: true
+    
 
 
 eureka:
@@ -21,8 +16,24 @@ eureka:
     fetchRegistry: true
     registerWithEureka: true
     serviceUrl:
-        defaultZone: http://localhost:8070/eureka/
+        #defaultZone: http://eurekaserver-ms:8070/eureka/
+        defulttZone: http://localhost:8070/eureka/
 
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readinessstate: 
+      enabled: true
+    livenessstate:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
 
 
 

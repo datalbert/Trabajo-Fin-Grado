@@ -1,5 +1,6 @@
 package trabajotfg.reservas.entity;
 
+import java.sql.Time;
 import java.util.Date;
 
 import jakarta.persistence.CascadeType;
@@ -8,6 +9,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,6 +18,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
+@Table(name = "`Reservas`")
 @Getter @Setter @ToString  @AllArgsConstructor @NoArgsConstructor
 public class Reservas {
 
@@ -30,6 +33,10 @@ public class Reservas {
     private Date fecha_inicio;
 
     private Date fecha_fin;
+
+    private Time hora_inicio;
+
+    private Time hora_final;
 
     private String estado;
 

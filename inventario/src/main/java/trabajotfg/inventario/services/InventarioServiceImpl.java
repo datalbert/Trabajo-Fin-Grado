@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
+
 
 import lombok.AllArgsConstructor;
 import trabajotfg.inventario.dto.InventarioDto;
@@ -55,12 +55,11 @@ public class InventarioServiceImpl implements InventarioService{
     
 
     @Override
-    public void insertarCoche(InventarioDto cochenuevo,MultipartFile imagen) throws IOException {
+    public void insertarCoche(InventarioDto cochenuevo) throws IOException {
         // TODO Auto-generated method stub
         
         Coches coche = InventarioMapped.maptoEntity(cochenuevo, new Coches());
         
-        coche.setFotos(imagen.getBytes());
         
         Estado estado = new Estado();
         
@@ -73,14 +72,6 @@ public class InventarioServiceImpl implements InventarioService{
 
     }
 
-    @Override
-    public void insertarFoto(MultipartFile foto) throws IOException {
-
-        Coches coche = new Coches();
-        coche.setFotos(foto.getBytes());
-        cochesRepository.save(coche);
-        // TODO Auto-generated method stub
-    }
 
 
     @Override
@@ -110,6 +101,23 @@ public class InventarioServiceImpl implements InventarioService{
     }
 
     @Override
+    public void actualizarCoche(InventarioDto coche) {
+        // TODO Auto-generated method stub
+        Coches vehiculo =cochesRepository.findById(coche.getId()).orElseThrow(()-> new RuntimeException("Coche no encontrado"));
+
+        vehiculo.setMarca(coche.getMarca());
+        vehiculo.setModelo(coche.getModelo());
+        vehiculo.setMatricula(coche.getMatricula());
+        vehiculo.setCombustible(coche.getCombustible());
+        vehiculo.setTransmision(coche.getTransmision());
+        vehiculo.setNumAsientos(coche.getNumAsientos());
+
+        cochesRepository.save(vehiculo);
+        
+
+    }
+
+    @Override
     public List<InventarioDto> searchcarsByFilters(String marca, String modelo, String combustible, String transmision,
             String numAsientos) {
         // TODO Auto-generated method stub
@@ -120,6 +128,8 @@ public class InventarioServiceImpl implements InventarioService{
         }
         return inventariocompleto;
     }
+
+    
     
 
    

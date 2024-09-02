@@ -1,0 +1,164 @@
+services:
+
+  inventariodb:
+    image: "mysql:latest"
+    container_name: inventario-db-ms
+    environment:
+      MYSQL_DATABASE: 'inventariodb'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'root'
+      MYSQL_ROOT_PASSWORD: 'root'
+    extends:
+      file: common.yml
+      service: network-deploy-service
+    
+    volumes:
+      - ./inventario-db.cnf:/etc/mysql/conf.d/my.cnf
+      
+    ports:
+      - "3307:3307"
+    
+  usuariosdb:
+    image: "mysql:latest"
+    container_name: usuarios-db-ms
+    environment:
+      MYSQL_DATABASE: 'usuariosdb'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'root'
+      MYSQL_ROOT_PASSWORD: 'root'
+    volumes:
+      - ./usuarios-db.cnf:/etc/mysql/conf.d/my.cnf
+    extends:
+      file: common.yml
+      service: network-deploy-service
+      
+    ports:
+      - "3306:3306"
+    
+  reservasdb:
+    image: "mysql:latest"
+    container_name: reservas-db-ms
+    environment:
+      MYSQL_DATABASE: 'reservasdb'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'root'
+      MYSQL_ROOT_PASSWORD: 'root'
+    extends:
+      file: common.yml
+      service: network-deploy-service
+    
+    volumes:
+      - ./reservas-db.cnf:/etc/mysql/conf.d/my.cnf
+      
+    ports:
+      - "3308:3308"
+
+    
+    
+  
+  configserver:
+    image: "datalbert/configserver:1.0"
+    container_name: configserver-ms
+    ports:
+      - "8888:8888"
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8888/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    extends:
+      file: common.yml
+      service: base-config
+    
+  eurekaserver:
+    image: "datalbert/eurekaserver:1.0"
+    container_name: eurekaserver-ms
+    ports:
+      - "8070:8070"
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8070/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    environment:
+      SPRING_APPLICATION_NAME: eurekaserver
+    extends:
+      file: common.yml
+      service: microservice-configserver
+
+  gatewayserver:
+    image: "datalbert/gatewayserver:1.0"
+    container_name: gatewayserver-ms
+    ports:
+      - "8071:8071"
+    depends_on:
+      inventario:
+        condition: service_healthy
+      usuarios:
+        condition: service_healthy
+      reservas:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: gatewayserver
+    extends:
+      file: common.yml
+      service: microservice-eurekaserver
+  
+  
+  usuarios:
+    image: "datalbert/usuarios:1.0"
+    container_name: usuarios-ms
+    ports:
+      - "8085:8085"
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8085/actuator/health/readiness/ | grep UP || exit 1"
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    environment:
+      SPRING_APPLICATION_NAME: usuarios
+    extends:
+      file: common.yml
+      service: microservice-eurekaserver
+  
+  inventario:
+    image: "datalbert/inventario:1.0"
+    container_name: inventario-ms
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8081/actuator/health/readiness/ | grep UP || exit 1"
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    environment:
+      SPRING_APPLICATION_NAME: inventario
+    extends:
+      file: common.yml
+      service: microservice-eurekaserver
+    
+  
+  reservas:
+    image: "datalbert/reservas:1.0"
+    container_name: reservas-ms
+    ports:
+      - "8082:8082"
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8082/actuator/health/readiness/ | grep UP || exit 1"
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    environment:
+      SPRING_APPLICATION_NAME: reservas
+    extends:
+      file: common.yml
+      service: microservice-eurekaserver
+    
+networks:
+  trabajo_final:
+    driver: bridge

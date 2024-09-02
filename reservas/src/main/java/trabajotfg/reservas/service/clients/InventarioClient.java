@@ -12,7 +12,7 @@ import trabajotfg.reservas.dto.ResponseDTO;
 public interface InventarioClient {
 
     //definimos los método que vamos a llamar
-    @RequestMapping(method = RequestMethod.PUT, value = "/inventario/actualizarEstado")
+    @RequestMapping(method = RequestMethod.PUT, value = "/actualizarEstado")
     public ResponseEntity<ResponseDTO> actualizarEstado(@RequestParam("idvehiculo") int idCoche, @RequestParam("estado") String estado);
 
 

@@ -1,7 +1,22 @@
 spring:
     application:
-        name: eurekaserver
+        name: "eurekaserver"
     config:
+        #import: "optional:configserver:http://configserver-ms:8888/"
         import: "optional:configserver:http://localhost:8888/"
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readinessstate:
+      enabled: true
+    livenessstate:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
 

@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "GpsApplication",
+            "request": "launch",
+            "mainClass": "trabajotfg.gps.GpsApplication",
+            "projectName": "gps"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-UsuariosApplication<usuarios>",
             "request": "launch",
             "cwd": "${workspaceFolder}",

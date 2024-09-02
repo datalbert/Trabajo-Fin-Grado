@@ -1,5 +1,6 @@
 package trabajotfg.reservas.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,11 @@ import trabajotfg.reservas.mapped.ReservasMapped;
 import trabajotfg.reservas.repository.PagosRepository;
 import trabajotfg.reservas.repository.ReservasRepository;
 import trabajotfg.reservas.service.clients.InventarioClient;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 @Service
 @AllArgsConstructor
@@ -58,6 +64,55 @@ public class ReservasServiceImpl  implements ReservasService{
 
 
         
+    }
+
+
+    @Override
+    public List<ReservasDto> obtenerReservas() {
+        // TODO Auto-generated method stub
+        List<ReservasDto> reservasDTO= new ArrayList<>();
+        List<Reservas> reservas= reservasRepository.findAll();
+        for (Reservas reserva : reservas) {
+            reservasDTO.add(ReservasMapped.convertToDTO(reserva, new ReservasDto()));
+        }
+
+        return reservasDTO;
+
+
+    }
+
+
+    @Override
+    public List<ReservasDto> obtenerReservasCompletadas(String fecha) {
+        List<ReservasDto> reservasDTO = new ArrayList<>();
+        try {
+            Date nuevaFecha = new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
+            List<Reservas> reservas = reservasRepository.findByFechaCompletadas(nuevaFecha);
+            for (Reservas reserva : reservas) {
+                reservasDTO.add(ReservasMapped.convertToDTO(reserva, new ReservasDto()));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            // Handle the exception, maybe log it or throw a custom exception
+        }
+        return reservasDTO;
+    }
+
+
+    @Override
+    public List<ReservasDto> obtenerReservasActivas(String fecha) {
+        List<ReservasDto> reservasDTO = new ArrayList<>();
+        try {
+            Date nuevaFecha = new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
+            List<Reservas> reservas = reservasRepository.findByFechaActivas(nuevaFecha);
+            for (Reservas reserva : reservas) {
+                reservasDTO.add(ReservasMapped.convertToDTO(reserva, new ReservasDto()));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            // Handle the exception, maybe log it or throw a custom exception
+        }
+        return reservasDTO;
     }
 
     

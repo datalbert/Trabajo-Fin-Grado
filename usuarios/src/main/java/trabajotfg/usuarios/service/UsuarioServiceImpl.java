@@ -1,5 +1,8 @@
 package trabajotfg.usuarios.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -65,6 +68,30 @@ public class UsuarioServiceImpl implements UsuarioService{
         }
     }
 
+    }
+
+
+    @Override
+    public List<UsuariosDTO> obtenerUsuarios() {
+
+        // TODO Auto-generated method stub
+        List<Usuarios> usuarios = usuarioRepository.findAll();
+
+        List<UsuariosDTO> usuariosdto = new ArrayList<>();
+
+        for (Usuarios usuario : usuarios) {
+            usuariosdto.add(UsuariosMapper.mapToUsuariosDTO(usuario, new UsuariosDTO()));
+        }
+
+        return usuariosdto;
+
+    }
+
+
+    @Override
+    public void eliminarUsuario(int id) {
+        // TODO Auto-generated method stub
+        usuarioRepository.deleteById(id);
     }
 
 
