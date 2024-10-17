@@ -41,7 +41,7 @@ public class Coches {
     @Column(name = "numasientos")
     private int numAsientos;
 
-    private int idPropietario;
+    private String emailpropietario;
 
     @OneToOne(mappedBy = "coche", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Estado estado;

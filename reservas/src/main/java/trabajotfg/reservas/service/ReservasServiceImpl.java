@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import trabajotfg.reservas.constant.ReservasConstant;
+import trabajotfg.reservas.dto.InventarioDto;
 import trabajotfg.reservas.dto.ReservasDto;
 import trabajotfg.reservas.dto.ResponseDTO;
 import trabajotfg.reservas.entity.Reservas;
@@ -35,6 +36,7 @@ public class ReservasServiceImpl  implements ReservasService{
         // TODO Auto-generated method stub
         //primero llamar al inventario para modificar el estado
         ResponseEntity<ResponseDTO> inventarioestado=inventarioClient.actualizarEstado(reserva.getIdvehiculo(), "RESERVADO");
+        
         reservasRepository.save(ReservasMapped.convertToEntity(reserva, new Reservas()));
     }
 
@@ -61,11 +63,8 @@ public class ReservasServiceImpl  implements ReservasService{
             reservasRepository.deleteById(id);
             return ReservasConstant.RESERVA_CANCELADA_REMBOLSO_100;
         }
-
-
         
     }
-
 
     @Override
     public List<ReservasDto> obtenerReservas() {
@@ -78,16 +77,14 @@ public class ReservasServiceImpl  implements ReservasService{
 
         return reservasDTO;
 
-
     }
 
-
     @Override
-    public List<ReservasDto> obtenerReservasCompletadas(String fecha) {
+    public List<ReservasDto> obtenerReservasCompletadas(String fecha,String email) {
         List<ReservasDto> reservasDTO = new ArrayList<>();
         try {
             Date nuevaFecha = new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
-            List<Reservas> reservas = reservasRepository.findByFechaCompletadas(nuevaFecha);
+            List<Reservas> reservas = reservasRepository.findByFechaCompletadas(nuevaFecha,email);
             for (Reservas reserva : reservas) {
                 reservasDTO.add(ReservasMapped.convertToDTO(reserva, new ReservasDto()));
             }
@@ -100,19 +97,45 @@ public class ReservasServiceImpl  implements ReservasService{
 
 
     @Override
-    public List<ReservasDto> obtenerReservasActivas(String fecha) {
+    public List<ReservasDto> obtenerReservasActivas(String fecha,String email) {
         List<ReservasDto> reservasDTO = new ArrayList<>();
         try {
             Date nuevaFecha = new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
-            List<Reservas> reservas = reservasRepository.findByFechaActivas(nuevaFecha);
+            List<Reservas> reservas = reservasRepository.findByFechaActivas(nuevaFecha,email);
             for (Reservas reserva : reservas) {
-                reservasDTO.add(ReservasMapped.convertToDTO(reserva, new ReservasDto()));
+                ReservasDto reservaDTO = ReservasMapped.convertToDTO(reserva, new ReservasDto());
+                ResponseEntity<InventarioDto> coche_reservado=inventarioClient.obtenerVehiculo(reserva.getId_vehiculo());
+                reservaDTO.setMatricula(coche_reservado.getBody().getMatricula());
+                reservaDTO.setMarca(coche_reservado.getBody().getMarca());
+                reservasDTO.add(reservaDTO);
+                
             }
         } catch (ParseException e) {
             e.printStackTrace();
             // Handle the exception, maybe log it or throw a custom exception
         }
         return reservasDTO;
+    }
+
+
+    @Override
+    public List<ReservasDto> obtenerReservasPorEmail(String email) {
+        // TODO Auto-generated method stub
+        List<ReservasDto> reservasDTO= new ArrayList<>();
+        List<Reservas> reservas= reservasRepository.findByEmailcliente(email);
+        for (Reservas reserva : reservas) {
+            reservasDTO.add(ReservasMapped.convertToDTO(reserva, new ReservasDto()));
+        }
+        return reservasDTO;
+    }
+
+
+    @Override
+    public void actualizarEstado(int idReserva, String estado) {
+        // TODO Auto-generated method stub
+        Reservas reserva = reservasRepository.findById(idReserva).orElseThrow(()-> new RuntimeException("Reserva no encontrada"));
+        reserva.setEstado(estado);
+        reservasRepository.save(reserva);
     }
 
     

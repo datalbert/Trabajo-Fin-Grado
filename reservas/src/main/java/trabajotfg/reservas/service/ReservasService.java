@@ -13,10 +13,14 @@ public interface ReservasService {
 
     String eliminarReserva(int id);
 
+    void actualizarEstado(int idReserva, String estado);
+
     List<ReservasDto> obtenerReservas();
 
-    List<ReservasDto> obtenerReservasCompletadas(String fecha);
+    List<ReservasDto> obtenerReservasCompletadas(String fecha,String email);
 
-    List<ReservasDto> obtenerReservasActivas(String fecha);
+    List<ReservasDto> obtenerReservasActivas(String fecha,String email);
+
+    List<ReservasDto> obtenerReservasPorEmail(String email);
 
 }

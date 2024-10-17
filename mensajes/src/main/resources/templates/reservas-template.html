@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+        }
+        .header {
+            background-color: #2bde73;
+            padding: 20px;
+            text-align: center;
+            color: #ffffff;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            padding: 20px;
+        }
+        .content h2 {
+            color: #333333;
+            font-size: 22px;
+        }
+        .content p {
+            color: #666666;
+            line-height: 1.6;
+        }
+        .details {
+            background-color: #f4f8fb;
+            padding: 15px;
+            border-left: 5px solid #2bde73;
+            margin-bottom: 20px;
+        }
+        .details strong {
+            color: #333333;
+        }
+        .image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .footer {
+            background-color: #f4f4f4;
+            padding: 10px;
+            text-align: center;
+            color: #999999;
+        }
+        .footer a {
+            color: #2bde73;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header de la empresa -->
+        <div class="header">
+            <h1>RentaMov</h1>
+        </div>
+
+        <!-- Contenido del correo -->
+        <div class="content">
+            <h2>Hola <span th:text="${reserva.nombre}">Cliente</span>, tu reserva está confirmada</h2>
+            <p>¡Prepárate para recoger tu coche en la fecha y hora indicadas!</p>
+
+            <!-- Sección de detalles de la reserva -->
+            <div class="details">
+                <p><strong>Vehículo reservado:</strong> <span th:text="${reserva.Coche}">Coche Modelo</span></p>
+                <p><strong>Fecha de recogida:</strong> <span th:text="${reserva.fecha_inicio}">01/09/2024</span></p>
+                <p><strong>Fecha de entrega:</strong> <span th:text="${reserva.fecha_fin}">14:00</span></p>
+                <p><strong>Hora de recogida:</strong> <span th:text="${reserva.hora_inicio}">14:00</span></p>
+                <p><strong>Hora de entrega:</strong> <span th:text="${reserva.hora_fin}">14:00</span></p>
+                <p><strong>Lugar de recogida:</strong> <span th:text="${reserva.direccion}">Madrid Centro</span></p>
+                
+            </div>
+
+
+            <!-- Detalles adicionales -->
+            <p>Recuerda que para utilizar nuestros vehiculos se debe de tener un carnet de conducir en vigor</p>
+        </div>
+
+        <!-- Pie de página -->
+        <div class="footer">
+            <p>RentaMov - Tu mejor opción en alquiler de coches.</p>
+            <p><a href="https://www.rentamov.com">Visita nuestra web</a> | Contacto: info@rentamov.com</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -23,4 +23,19 @@ public class GpsServiceImpl  implements GpsService {
         return obj;
     }
 
+    @Override
+    public JSONObject createJsonUptade(EntityDTO entity) {
+
+        JSONObject obj = new JSONObject();
+        // TODO Auto-generated method stub
+        JSONObject position = new JSONObject();
+        position.put("type", "geo:point");
+        position.put("value", entity.getLatitud() + "," + entity.getLongitud());
+
+        obj.put("position", position);
+
+        return obj;
+        
+    }
+
 }

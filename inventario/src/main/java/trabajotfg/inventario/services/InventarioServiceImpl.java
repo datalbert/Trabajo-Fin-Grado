@@ -36,7 +36,13 @@ public class InventarioServiceImpl implements InventarioService{
         //Optional<Coches> cochedevolver= cochesRepository.findById(id);
 
         return cochesRepository.findById(id).orElseThrow(()-> new RuntimeException("Coche no encontrado"));
+    }
 
+    @Override
+    public Coches obtenerCochesPorMatricula(String matricula) {
+        // TODO Auto-generated method stub
+        return cochesRepository.findByMatricula(matricula);
+       
     }
 
     @Override
@@ -128,6 +134,23 @@ public class InventarioServiceImpl implements InventarioService{
         }
         return inventariocompleto;
     }
+
+    @Override
+    public List<InventarioDto> obtenerCochesPorPropietario(String email) {
+        
+        List<InventarioDto> inventariocompleto = new ArrayList<>();
+
+
+        for (Coches coches : cochesRepository.findByEmailpropietario(email)) {
+            inventariocompleto.add(InventarioMapped.maptoDto(coches, new InventarioDto()));
+        }
+
+        return inventariocompleto;
+
+        
+    }
+
+   
 
     
     

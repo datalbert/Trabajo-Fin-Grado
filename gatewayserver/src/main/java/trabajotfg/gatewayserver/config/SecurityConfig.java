@@ -51,6 +51,8 @@ public class SecurityConfig {
                 .pathMatchers("/tfg/usuarios/**").authenticated()
                 .pathMatchers("/tfg/inventario/**").authenticated()
                 .pathMatchers("/tfg/reservas/**").authenticated()
+                .pathMatchers("/tfg/pagos/**").authenticated()
+                .pathMatchers("/tfg/gps/**").authenticated()
                 .pathMatchers("/tfg/inventario/nuevoCoche").hasRole("Provedor")
                 .pathMatchers("/tfg/inventario/actualizarCoche").hasRole("Provedor")
                 .pathMatchers("/tfg/inventario/eliminarCoche/*").hasRole("Provedor")

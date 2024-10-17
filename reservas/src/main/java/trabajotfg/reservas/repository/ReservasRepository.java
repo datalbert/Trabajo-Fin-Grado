@@ -11,11 +11,13 @@ import trabajotfg.reservas.entity.Reservas;
 
 public interface ReservasRepository  extends JpaRepository<Reservas, Integer>{
 
-    @Query("SELECT r FROM Reservas r WHERE r.fecha_fin < :fecha")
-    List<Reservas> findByFechaCompletadas(Date fecha);
+    @Query("SELECT r FROM Reservas r WHERE r.fecha_fin < :fecha AND r.emailcliente=:email")
+    List<Reservas> findByFechaCompletadas(Date fecha,String email);
 
-    @Query("SELECT r FROM Reservas r WHERE r.fecha_fin >= :fecha")
-    List<Reservas> findByFechaActivas(Date fecha);
+    @Query("SELECT r FROM Reservas r WHERE r.fecha_fin >= :fecha AND r.emailcliente=:email")
+    List<Reservas> findByFechaActivas(Date fecha,String email);
+
+    List<Reservas> findByEmailcliente(String email);
 
     
 

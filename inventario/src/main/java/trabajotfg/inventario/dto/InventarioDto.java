@@ -21,7 +21,7 @@ public class InventarioDto {
     
     private int numAsientos;
     
-    private int idPropietario;
+    private String emailpropietario;
 
     private String latitud;
 

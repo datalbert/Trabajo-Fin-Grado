@@ -2,7 +2,6 @@
 package trabajotfg.reservas.mapped;
 
 import java.util.Date;
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,7 +14,7 @@ public class ReservasMapped {
 
     public static Reservas convertToEntity(ReservasDto dto, Reservas entity) {
         
-        entity.setId_usuario(dto.getIdcliente());
+        entity.setEmailcliente(dto.getEmailcliente());
         entity.setId_vehiculo(dto.getIdvehiculo());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat timeFormat = new SimpleDateFormat("HH:mm");
@@ -23,14 +22,19 @@ public class ReservasMapped {
         try {
             Date fechaInicio = dateFormat.parse(dto.getFechaInicio());
             entity.setFecha_inicio(fechaInicio);
+            if(dto.getFechaFin() == null) {
+                entity.setFecha_fin(fechaInicio);
+            }
         } catch (ParseException e) {
             // Handle the exception or throw it
             e.printStackTrace();
         }
         
         try {
-            Date fechaFin = dateFormat.parse(dto.getFechaFin());
-            entity.setFecha_fin(fechaFin);
+            if(dto.getFechaFin() != null) {
+                Date fechaFin = dateFormat.parse(dto.getFechaFin());
+                entity.setFecha_fin(fechaFin);
+            }
         } catch (ParseException e) {
             // Handle the exception or throw it
             e.printStackTrace();
@@ -59,7 +63,7 @@ public class ReservasMapped {
     public static ReservasDto convertToDTO(Reservas entity, ReservasDto dto) {
         
         dto.setIdreserva(entity.getIdreserva());
-        dto.setIdcliente(entity.getId_usuario());
+        dto.setEmailcliente(entity.getEmailcliente());
         dto.setIdvehiculo(entity.getId_vehiculo());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");

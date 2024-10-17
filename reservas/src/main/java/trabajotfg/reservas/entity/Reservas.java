@@ -28,7 +28,7 @@ public class Reservas {
 
     private int id_vehiculo;
 
-    private int id_usuario;
+    private String emailcliente;
 
     private Date fecha_inicio;
 

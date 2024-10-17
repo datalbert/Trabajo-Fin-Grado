@@ -9,5 +9,7 @@ public interface GpsService {
 
 JSONObject createJson(EntityDTO entity);
 
+JSONObject createJsonUptade(EntityDTO entity);
+
 
 }

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 import jakarta.ws.rs.client.Entity;
 import lombok.AllArgsConstructor;
 import trabajotfg.inventario.constant.InventarioConstant;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -83,6 +85,8 @@ public class InventarioController {
 
         return ResponseEntity.status(HttpStatus.OK).body(coche);
     }
+
+    
     
     
 
@@ -96,12 +100,30 @@ public class InventarioController {
         return ResponseEntity.status(HttpStatus.OK).body(devolverlista);
     }
 
+    @Operation(summary = "Obtener todos los coches del inventario pertenecientes a un usuario")
+    @ApiResponse(responseCode = "200", description = "Lista de coches obtenida correctamente")
+    @GetMapping("/")
+    public ResponseEntity<List<InventarioDto>> obtenerCochesPorPropietario(@RequestParam("email") String emailpropietario){
+
+        List<InventarioDto> devolverlista=inventarioService.obtenerCochesPorPropietario(emailpropietario);
+
+        return ResponseEntity.status(HttpStatus.OK).body(devolverlista);
+    }
+
     @Operation(summary = "Obtener el listado de los coches con estado disponibles")
     @ApiResponse(responseCode = "200", description = "Lista de coches disponibles obtenida correctamente")
     @GetMapping("/obtenerDisponibles")
     public ResponseEntity<List<InventarioDto>> obtenerDisponibles(){
 
         List<InventarioDto> devolverlista=inventarioService.obtenerDisponibles();
+
+        for (InventarioDto coche : devolverlista) {
+            //llamar al gps para obtener la localización de cada coche disponible
+            EntityDTO entity = gpsClient.obtenerEntidad(coche.getMatricula());
+            coche.setLatitud(entity.getLatitud());
+            coche.setLongitud(entity.getLongitud());
+        }
+        
 
         return ResponseEntity.status(HttpStatus.OK).body(devolverlista);
     }
@@ -137,6 +159,30 @@ public class InventarioController {
 
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(InventarioConstant.HTTP_STATUS_OK, InventarioConstant.HTTP_RECURSE_DELETED));
     }
+
+    @GetMapping("/ubicacion/{latitud}/{longitud}/{radio}")
+    public ResponseEntity<List<InventarioDto>> buscarPorCategoria(@PathVariable("latitud") String latitud, @PathVariable("longitud") String longitud, @PathVariable("radio") String radio) {
+        
+        //llamar a gps para obtener la lista de coches que se encuentran en un radio 
+        List<EntityDTO> lista = gpsClient.filtrarporUbicacion(latitud, longitud, radio);
+
+        //obtener la lista de coches que se encuentran en la lista de gps
+
+        List<InventarioDto> inventariocompleto = new ArrayList<>();
+        
+        for (EntityDTO entity : lista) {
+            Coches coche = inventarioService.obtenerCochesPorMatricula(entity.getMatricula());
+            InventarioDto cocheDto = InventarioMapped.maptoDto(coche, new InventarioDto());
+            cocheDto.setLatitud(entity.getLatitud());
+            cocheDto.setLongitud(entity.getLongitud());
+            inventariocompleto.add(cocheDto);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(inventariocompleto);
+
+
+    }
+    
 
     @Operation(summary = "Buscar coches por diferentes filtros")
     @ApiResponse(responseCode = "200", description = "Lista de coches obtenida correctamente por los filtros seleccionados")

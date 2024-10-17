@@ -18,10 +18,13 @@ public interface InventarioService {
 
     Coches obtenerCoche(int id);
 
+    Coches obtenerCochesPorMatricula(String matricula);
+
     void actualizarCoche(InventarioDto coche);
 
     List<InventarioDto> obtenerCoches();
 
+    List<InventarioDto> obtenerCochesPorPropietario(String email);
 
     List<InventarioDto> obtenerDisponibles();
 

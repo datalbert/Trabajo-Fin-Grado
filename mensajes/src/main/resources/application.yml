@@ -1,0 +1,30 @@
+spring:
+    application:
+        name: mensajes
+
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: carsrental10@gmail.com
+        password: zxie pgce picn qwsk
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true
+    
+    cloud:
+        function:
+            definition: sendEmail
+        stream:
+                bindings:
+                    sendEmail-in-0:
+                        destination: send-email
+
+                kafka:
+                    binder:
+                        brokers: 
+                            - localhost:9092
+                        
+                

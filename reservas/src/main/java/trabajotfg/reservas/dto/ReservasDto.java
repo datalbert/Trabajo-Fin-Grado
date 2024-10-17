@@ -9,7 +9,13 @@ public class ReservasDto {
 
     private int idvehiculo;
 
-    private int idcliente;
+    private String matricula;
+
+    private String marca;
+
+    private String emailcliente;
+
+    private String nombrecliente;
 
     private String fechaInicio;
 
@@ -20,6 +26,8 @@ public class ReservasDto {
     private String horaFin;
 
     private String estado;
+
+    private String direccion;
 
 
 

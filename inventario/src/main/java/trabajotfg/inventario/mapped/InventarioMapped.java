@@ -16,7 +16,7 @@ public class InventarioMapped {
         entity.setCombustible(dto.getCombustible());
         entity.setTransmision(dto.getTransmision());
         entity.setNumAsientos(dto.getNumAsientos());
-        entity.setIdPropietario(dto.getIdPropietario());
+        entity.setEmailpropietario(dto.getEmailpropietario());
         return entity;
     }
 
@@ -30,7 +30,7 @@ public class InventarioMapped {
         dto.setCombustible(entity.getCombustible());
         dto.setTransmision(entity.getTransmision());
         dto.setNumAsientos(entity.getNumAsientos());
-        dto.setIdPropietario(entity.getIdPropietario());
+        dto.setEmailpropietario(entity.getEmailpropietario());
         return dto;
     }
 

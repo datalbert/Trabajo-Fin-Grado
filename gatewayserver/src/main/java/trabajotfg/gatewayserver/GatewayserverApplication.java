@@ -27,6 +27,7 @@ public class GatewayserverApplication {
 		SpringApplication.run(GatewayserverApplication.class, args);
 	}
 
+	
 
 	@Bean
 	public RouteLocator tfgRouteLocatio(RouteLocatorBuilder builder) {
@@ -43,6 +44,14 @@ public class GatewayserverApplication {
 						.path("/tfg/reservas/**")
 						.filters(f -> f.rewritePath("/tfg/reservas/(?<segment>.*)", "/${segment}"))
 						.uri("lb://RESERVAS"))
+				.route("pagos-service", p -> p
+						.path("/tfg/pagos/**")
+						.filters(f -> f.rewritePath("/tfg/pagos/(?<segment>.*)", "/${segment}"))
+						.uri("lb://PAGOS"))
+				.route("gps-service", p -> p
+						.path("/tfg/gps/**")
+						.filters(f -> f.rewritePath("/tfg/gps/(?<segment>.*)", "/${segment}"))
+						.uri("lb://GPS"))
 				//rutas para swagger
 				.route("swagger-usuario", p -> p
 						.path("/v3/api-docs/usuarios")

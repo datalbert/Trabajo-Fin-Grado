@@ -15,5 +15,11 @@ public interface CochesRepository extends JpaRepository<Coches, Integer>, JpaSpe
 
     List <Coches> findAll(Specification<Coches> specification);
 
+    Coches findByMatricula(String matricula);
+
+   List<Coches> findByEmailpropietario(String emailpropietario);
+
+
+
     
 }
