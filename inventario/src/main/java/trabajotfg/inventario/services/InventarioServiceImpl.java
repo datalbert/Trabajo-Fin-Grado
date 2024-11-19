@@ -13,6 +13,7 @@ import trabajotfg.inventario.entity.Estado;
 import trabajotfg.inventario.mapped.InventarioMapped;
 import trabajotfg.inventario.repository.CochesRepository;
 import trabajotfg.inventario.repository.EstadoRepository;
+import trabajotfg.inventario.services.clients.GpsClient;
 import trabajotfg.inventario.specification.CochesSpecification;
 
 @Service
@@ -23,11 +24,17 @@ public class InventarioServiceImpl implements InventarioService{
 
     private EstadoRepository estadoRepository;
 
+    //cliente de GPS
+    private GpsClient gpsClient;
+
     @Override
     public void eliminarCoche(int id) {
-        // TODO Auto-generated method stub
+
+        //llamar también al GPS para que elimine el coche de su base de datos
+        gpsClient.eliminarEntidad(cochesRepository.findById(id).get().getMatricula());
+
         cochesRepository.deleteById(id);
-        
+
     }
 
     @Override
@@ -127,7 +134,8 @@ public class InventarioServiceImpl implements InventarioService{
     public List<InventarioDto> searchcarsByFilters(String marca, String modelo, String combustible, String transmision,
             String numAsientos) {
         // TODO Auto-generated method stub
-        List<Coches> coches = cochesRepository.findAll(CochesSpecification.conditionalSearch(marca, modelo, combustible, transmision, numAsientos));
+        List<Coches> coches = cochesRepository.findAll(CochesSpecification.conditionalSearch(marca, modelo, combustible, transmision,
+         numAsientos,"Disponible"));
         List<InventarioDto> inventariocompleto = new ArrayList<>();
         for (Coches coche : coches){
             inventariocompleto.add(InventarioMapped.maptoDto(coche, new InventarioDto()));
@@ -142,7 +150,12 @@ public class InventarioServiceImpl implements InventarioService{
 
 
         for (Coches coches : cochesRepository.findByEmailpropietario(email)) {
-            inventariocompleto.add(InventarioMapped.maptoDto(coches, new InventarioDto()));
+            //obtenemos el estado de cada uno de los coches
+            Estado estado = estadoRepository.findByCoche(coches);
+            InventarioDto coche_instertar = InventarioMapped.maptoDto(coches, new InventarioDto());
+            coche_instertar.setEstado(estado.getEstado());
+            //inventariocompleto.add(InventarioMapped.maptoDto(coches, new InventarioDto()));
+            inventariocompleto.add(coche_instertar);
         }
 
         return inventariocompleto;

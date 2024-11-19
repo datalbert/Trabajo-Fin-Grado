@@ -6,4 +6,6 @@ import trabajotfg.pago.entity.Transacciones;
 
 public interface TransaccionesRepository  extends JpaRepository<Transacciones, String>{
 
+    Transacciones findByIdReserva(Integer id);
+
 }

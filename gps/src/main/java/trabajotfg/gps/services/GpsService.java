@@ -11,5 +11,7 @@ JSONObject createJson(EntityDTO entity);
 
 JSONObject createJsonUptade(EntityDTO entity);
 
+void finalizarReserva(String matricula);
+
 
 }

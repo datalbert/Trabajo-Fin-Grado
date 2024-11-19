@@ -29,6 +29,8 @@ public class ReservasDto {
 
     private String direccion;
 
+    private Double precio;
+
 
 
 }

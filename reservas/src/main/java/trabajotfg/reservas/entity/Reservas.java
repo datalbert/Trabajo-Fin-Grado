@@ -4,6 +4,7 @@ import java.sql.Time;
 import java.util.Date;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -26,7 +27,8 @@ public class Reservas {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idreserva;
 
-    private int id_vehiculo;
+    @Column(name = "id_vehiculo")
+    private int idVehiculo;
 
     private String emailcliente;
 

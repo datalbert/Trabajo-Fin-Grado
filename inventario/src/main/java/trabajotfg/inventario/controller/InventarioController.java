@@ -2,9 +2,16 @@ package trabajotfg.inventario.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.criteria.CriteriaBuilder.In;
 import jakarta.ws.rs.client.Entity;
@@ -27,6 +34,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.ArrayList;
 
+import org.hibernate.annotations.Array;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -46,6 +54,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping
+@OpenAPIDefinition(
+    info = @Info(
+        title = "RentaMov API",
+        version = "1.0",
+        description = "API general para la gestión de inventario, reservas, pagos y localización en el sistema de alquiler de vehículos.",
+        contact = @Contact(
+            name = "Alberto Ávila Fernández",
+            email = "albertoaf0520@gmail.com",
+            url = "https://www.rentamov.com"
+        )
+    )
+)
 @Tag(name = "Inventario", description = "API para la Gestión de Inventario")
 @AllArgsConstructor
 public class InventarioController {
@@ -76,8 +96,18 @@ public class InventarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDTO(InventarioConstant.HTTP_STATUS_CREATED, InventarioConstant.HTTP_STATUS_CREATED_MESSAGE));
     }
 
-    
-    @GetMapping("/{id}")
+    @Operation(summary = "Obtener un coche por su identificador de la base de datos")
+    @ApiResponses ( value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Coche obtenido correctamente",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = InventarioDto.class))
+        ),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Coche no encontrado")
+    })
+    @GetMapping("/coches/{id}")
     public ResponseEntity<InventarioDto> obtenerCochePorId (@PathVariable("id")  int id) {
 
 
@@ -86,13 +116,39 @@ public class InventarioController {
         return ResponseEntity.status(HttpStatus.OK).body(coche);
     }
 
-    
-    
+    @Operation(summary = "Obtener un coche por su matricula")
+    @ApiResponses ( value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Coche obtenido correctamente",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = InventarioDto.class))
+        ),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Coche no encontrado")
+    })
+    @GetMapping("/coches/matricula/{matricula}")
+    public ResponseEntity<InventarioDto> obtenerCochePorMatricula(@PathVariable("matricula") String matricula) {
+        
+        InventarioDto coche = InventarioMapped.maptoDto(inventarioService.obtenerCochesPorMatricula(matricula), new InventarioDto());
+
+        return ResponseEntity.status(HttpStatus.OK).body(coche);
+
+    }
     
 
     @Operation(summary = "Obtener todos los coches del inventario")
-    @ApiResponse(responseCode = "200", description = "Lista de coches obtenida correctamente")
-    @GetMapping("/obtenerTodos")
+    @ApiResponses ( value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Lista de todos los coches obtenidos correctamente del inventario",
+            content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = InventarioDto.class)))
+        ),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Coche no encontrado")
+    })
+    @GetMapping("/coches/todos")
     public ResponseEntity<List<InventarioDto>> obtenerTodos(){
 
         List<InventarioDto> devolverlista=inventarioService.obtenerCoches();
@@ -101,8 +157,17 @@ public class InventarioController {
     }
 
     @Operation(summary = "Obtener todos los coches del inventario pertenecientes a un usuario")
-    @ApiResponse(responseCode = "200", description = "Lista de coches obtenida correctamente")
-    @GetMapping("/")
+    @ApiResponses ( value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "lista de coches pertenecientes a un usuario",
+            content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = InventarioDto.class)))
+        ),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Coche no encontrado")
+    })
+    @GetMapping("/coches/propietario")
     public ResponseEntity<List<InventarioDto>> obtenerCochesPorPropietario(@RequestParam("email") String emailpropietario){
 
         List<InventarioDto> devolverlista=inventarioService.obtenerCochesPorPropietario(emailpropietario);
@@ -111,8 +176,17 @@ public class InventarioController {
     }
 
     @Operation(summary = "Obtener el listado de los coches con estado disponibles")
-    @ApiResponse(responseCode = "200", description = "Lista de coches disponibles obtenida correctamente")
-    @GetMapping("/obtenerDisponibles")
+    @ApiResponses ( value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Lista de coches disponibles  del inventario",
+            content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = InventarioDto.class)))
+        ),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Coche no encontrado")
+    })
+    @GetMapping("/coches/disponibles")
     public ResponseEntity<List<InventarioDto>> obtenerDisponibles(){
 
         List<InventarioDto> devolverlista=inventarioService.obtenerDisponibles();
@@ -129,9 +203,18 @@ public class InventarioController {
     }
 
     @Operation(summary = "Actualización del estado de un coche")
-    @ApiResponse(responseCode = "200", description = "Estado del coche actualizado correctamente")
-    @PutMapping("/actualizarEstado")
-    public ResponseEntity<ResponseDTO> actualizarEstado(@RequestParam int idvehiculo,@RequestParam String estado){
+    @ApiResponse(
+        responseCode = "200",
+        description = "Estado del coche actualizado correctamente",
+        content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))
+    )
+    @PutMapping("/coches/{idvehiculo}/estado")
+    public ResponseEntity<ResponseDTO> actualizarEstado(
+            @Parameter(description = "Identificador único del coche en la base de datos", required = true, example = "123")
+            @PathVariable int idvehiculo,
+
+            @Parameter(description = "Nuevo estado que se desea asignar al coche (por ejemplo, 'Disponible', 'En mantenimiento')", required = true, example = "Disponible")
+            @RequestBody String estado){
 
         inventarioService.modificarEstado(idvehiculo, estado);
 
@@ -139,9 +222,21 @@ public class InventarioController {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(InventarioConstant.HTTP_STATUS_OK, InventarioConstant.HTTP_STATUS_CHANGE));
   
     }
-
+    @Operation(summary = "Actualizar información de un coche en el inventario")
+    @ApiResponse(
+        responseCode = "200",
+        description = "Información del coche actualizada correctamente",
+        content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseDTO.class))
+    )
+    @ApiResponse(
+        responseCode = "400",
+        description = "Datos de entrada inválidos",
+        content = @Content(mediaType = "application/json")
+    )
     @PutMapping
-    public  ResponseEntity<ResponseDTO> actualizarCoche(@RequestBody InventarioDto nuevocoche) throws IOException{
+    public  ResponseEntity<ResponseDTO> actualizarCoche(
+        @Parameter(description = "Objeto InventarioDto con los datos actualizados del coche", required = true)
+        @RequestBody InventarioDto nuevocoche) throws IOException{
         //TODO: process PUT request
 
         inventarioService.actualizarCoche(nuevocoche);
@@ -151,17 +246,46 @@ public class InventarioController {
 
     //@CrossOrigin
     @Operation(summary = "Eliminar un coche del inventario")
-    @ApiResponse(responseCode = "200", description = "Coche eliminado correctamente")
-    @DeleteMapping("/eliminarCoche/{id}") 
-    public ResponseEntity<ResponseDTO> eliminarCoche(@PathVariable("id") int id){
+    @ApiResponse(
+        responseCode = "200",
+        description = "Coche eliminado correctamente",
+        content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseDTO.class))
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = "Coche no encontrado",
+        content = @Content(mediaType = "application/json")
+    )
+    @DeleteMapping("/coches/{id}") 
+    public ResponseEntity<ResponseDTO> eliminarCoche(
+        @Parameter(description = "Identificador único del coche a eliminar", required = true, example = "123")
+
+        @PathVariable("id") int id){
 
         inventarioService.eliminarCoche(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(InventarioConstant.HTTP_STATUS_OK, InventarioConstant.HTTP_RECURSE_DELETED));
     }
 
-    @GetMapping("/ubicacion/{latitud}/{longitud}/{radio}")
-    public ResponseEntity<List<InventarioDto>> buscarPorCategoria(@PathVariable("latitud") String latitud, @PathVariable("longitud") String longitud, @PathVariable("radio") String radio) {
+    @Operation(summary = "Buscar coches en una ubicación específica")
+    @ApiResponse(
+        responseCode = "200",
+        description = "Lista de coches obtenida correctamente en la ubicación especificada",
+        content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = InventarioDto.class)))
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = "No se encontraron coches en la ubicación especificada",
+        content = @Content(mediaType = "application/json")
+    )
+    @GetMapping("/coches/ubicacion/{latitud}/{longitud}/{radio}")
+    public ResponseEntity<List<InventarioDto>> buscarPorCategoria(
+        @Parameter(description = "Latitud de la ubicación de búsqueda", required = true, example = "40.7128")
+        @PathVariable("latitud") String latitud, 
+        @Parameter(description = "Longitud de la ubicación de búsqueda", required = true, example = "-74.0060")
+        @PathVariable("longitud") String longitud, 
+        @Parameter(description = "Radio de búsqueda en kilómetros", required = true, example = "10")
+        @PathVariable("radio") String radio) {
         
         //llamar a gps para obtener la lista de coches que se encuentran en un radio 
         List<EntityDTO> lista = gpsClient.filtrarporUbicacion(latitud, longitud, radio);
@@ -184,14 +308,23 @@ public class InventarioController {
     }
     
 
-    @Operation(summary = "Buscar coches por diferentes filtros")
-    @ApiResponse(responseCode = "200", description = "Lista de coches obtenida correctamente por los filtros seleccionados")
-    @GetMapping("/buscarporCategoria")
+    @Operation(summary = "Buscar coches por diferentes filtros de categorías")
+    @ApiResponse(
+        responseCode = "200",
+        description = "Lista de coches obtenida correctamente por los filtros seleccionados",
+        content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = InventarioDto.class)))
+    )
+    @GetMapping("/coches")
     public ResponseEntity<List<InventarioDto>> searchByFilters(
-        @RequestParam(defaultValue="") String marca, 
+        @Parameter(description = "Marca del coche para filtrar", example = "Toyota")
+        @RequestParam(defaultValue="") String marca,
+        @Parameter(description = "Modelo del coche para filtrar", example = "Corolla") 
         @RequestParam(defaultValue="") String modelo, 
+        @Parameter(description = "Tipo de combustible del coche para filtrar", example = "Gasolina")
         @RequestParam(defaultValue="") String combustible, 
+        @Parameter(description = "Tipo de transmisión del coche para filtrar", example = "Automático")
         @RequestParam(defaultValue="") String transmision, 
+        @Parameter(description = "Número de asientos del coche para filtrar", example = "5")
         @RequestParam(defaultValue="") String numAsientos) {
         List<InventarioDto> inventariocompleto = inventarioService.searchcarsByFilters(marca, modelo, combustible, transmision, numAsientos);
         return ResponseEntity.status(HttpStatus.OK).body(inventariocompleto);

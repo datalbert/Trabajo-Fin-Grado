@@ -1,6 +1,6 @@
 package trabajotfg.reservas.entity;
 
-import java.sql.Date;
+import java.util.Date;
 
 
 import jakarta.persistence.Column;
@@ -29,7 +29,7 @@ public class Pagos {
     @JoinColumn(name = "id_reserva")
     private Reservas reserva;
 
-    private int cantidad;
+    private double cantidad;
 
     private Date fecha;
 

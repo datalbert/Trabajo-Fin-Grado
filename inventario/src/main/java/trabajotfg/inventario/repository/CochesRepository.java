@@ -11,11 +11,11 @@ import trabajotfg.inventario.entity.Coches;
 public interface CochesRepository extends JpaRepository<Coches, Integer>, JpaSpecificationExecutor<Coches> {
     // Remove the conflicting method declaration
 
-    List<Coches> findAll();
+   List<Coches> findAll();
 
-    List <Coches> findAll(Specification<Coches> specification);
+   List <Coches> findAll(Specification<Coches> specification);
 
-    Coches findByMatricula(String matricula);
+   Coches findByMatricula(String matricula);
 
    List<Coches> findByEmailpropietario(String emailpropietario);
 

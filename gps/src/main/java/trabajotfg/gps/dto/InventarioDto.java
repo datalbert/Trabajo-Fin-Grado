@@ -1,4 +1,4 @@
-package trabajotfg.inventario.dto;
+package trabajotfg.gps.dto;
 
 import lombok.Data;
 
@@ -22,8 +22,6 @@ public class InventarioDto {
     private int numAsientos;
     
     private String emailpropietario;
-
-    private String estado;
 
     private String latitud;
 

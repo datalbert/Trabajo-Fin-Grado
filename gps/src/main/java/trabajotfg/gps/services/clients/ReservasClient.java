@@ -12,7 +12,14 @@ import trabajotfg.gps.dto.ResponseDTO;
 @FeignClient(name = "reservas")
 public interface ReservasClient {
 
-     @RequestMapping(method = RequestMethod.PUT, value = "/{id}")
+     @RequestMapping(method = RequestMethod.PUT, value = "/reservas/{id}")
     public ResponseEntity<ResponseDTO> actualizarEstadoReserva(@PathVariable int id);
+
+    @RequestMapping(method = RequestMethod.GET, value = "/reserva/{idvehiculo}")
+    public int obtenerReservaPorIdVehiclo(@PathVariable("idvehiculo") int idvehiculo);
+
+
+
+    
 
 }

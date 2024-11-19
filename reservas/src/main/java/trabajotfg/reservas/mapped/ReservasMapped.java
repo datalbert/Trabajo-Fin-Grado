@@ -15,7 +15,7 @@ public class ReservasMapped {
     public static Reservas convertToEntity(ReservasDto dto, Reservas entity) {
         
         entity.setEmailcliente(dto.getEmailcliente());
-        entity.setId_vehiculo(dto.getIdvehiculo());
+        entity.setIdVehiculo(dto.getIdvehiculo());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat timeFormat = new SimpleDateFormat("HH:mm");
         
@@ -64,7 +64,7 @@ public class ReservasMapped {
         
         dto.setIdreserva(entity.getIdreserva());
         dto.setEmailcliente(entity.getEmailcliente());
-        dto.setIdvehiculo(entity.getId_vehiculo());
+        dto.setIdvehiculo(entity.getIdVehiculo());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         dto.setFechaInicio(dateFormat.format(entity.getFecha_inicio()));

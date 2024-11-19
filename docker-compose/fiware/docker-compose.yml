@@ -7,7 +7,7 @@
        - "1026:1026"
      depends_on:
        - mongo
-     command: -dbURI mongodb://mongo
+     command: -dbURI mongodb://mongo -corsOrigin http://localhost:4200 -corsMaxAge 600
  
    mongo:
      image: mongo:6.0

@@ -18,8 +18,8 @@ public interface GpsClient {
     @RequestMapping
     public void crearEntidad(EntityDTO entity);
 
-    @DeleteMapping(value = "/{id}")
-    public void eliminarEntidad(int id);
+    @DeleteMapping(value = "/{matricula}")
+    public void eliminarEntidad(@PathVariable("matricula") String matricula);
 
     @GetMapping(value = "/{matricula}")
     EntityDTO obtenerEntidad(@PathVariable("matricula")String matricula);

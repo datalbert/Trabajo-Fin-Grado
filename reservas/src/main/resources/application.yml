@@ -10,11 +10,17 @@ spring:
 
     cloud:
         function:
-            definition: sendEmail
+            definition: sendEmail;sendInventarioConfirmation;sendPagoConfirmation
+
         stream:
           bindings:
             sendEmail-out-0:
               destination: send-email
+            sendInventarioConfirmation-out-0:
+              destination: inventario-confirmation
+            sendPagoConfirmation-in-0:
+              destination: pago-confirmation
+            
           kafka:
             binder:
               brokers: 

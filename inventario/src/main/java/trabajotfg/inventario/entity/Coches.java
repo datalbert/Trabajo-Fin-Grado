@@ -46,6 +46,8 @@ public class Coches {
     @OneToOne(mappedBy = "coche", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Estado estado;
 
+    
+
 
 
 }

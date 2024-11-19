@@ -47,6 +47,10 @@ public class SecurityConfig {
             .authorizeExchange(exchanges -> exchanges
                 
                  //permitimos las rutas hacia la documentación de swagger
+                 .pathMatchers("/tfg/inventario/v3/api-docs").permitAll()
+                .pathMatchers("/tfg/reservas/v3/api-docs").permitAll()
+                .pathMatchers("/tfg/pagos/v3/api-docs").permitAll()
+                .pathMatchers("/tfg/gps/v3/api-docs").permitAll()
                 
                 .pathMatchers("/tfg/usuarios/**").authenticated()
                 .pathMatchers("/tfg/inventario/**").authenticated()

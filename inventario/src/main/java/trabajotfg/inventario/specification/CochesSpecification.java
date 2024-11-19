@@ -30,8 +30,16 @@ public class CochesSpecification {
         return (root, query, builder) -> builder.like(root.get("numAsientos"), "%" + numAsientos + "%");
     }
 
+    public static Specification<Coches> withEstado(String estado) {
+        return (root, query, builder) -> {
+            // Join with Estado and apply the condition on estado field
+            return builder.equal(root.join("estado").get("estado"), estado);
+        };
+    }
 
-    public static Specification<Coches> conditionalSearch(String marca, String modelo, String combustible, String transmision, String numAsientos){
+
+    public static Specification<Coches> conditionalSearch(String marca, String modelo, String combustible, String transmision,
+     String numAsientos, String estado){
         //comprobamos que los campos no esten vacios
 
         Specification<Coches> specification = null;
@@ -71,6 +79,15 @@ public class CochesSpecification {
                 specification = withNumAsientos(numAsientos);
             }
         }
+
+        if (estado != null && !estado.isEmpty()) {
+            if (specification != null) {
+                specification = specification.and(withEstado(estado));
+            } else {
+            specification = specification.and(withEstado(estado));
+            }
+        } 
+
 
         return specification;
 

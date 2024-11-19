@@ -35,31 +35,34 @@ logging:
           ##  display-name: "Admin"
           ##  paths-to-match: "/admin/**"
 springdoc:
-    enable-native-support: true
-    api-docs:
-        groups:
-            enabled: true
-    group-configs:
-        0:
-            group: "inventario"
-            display-name: "Inventario"
-            paths-to-match: "/tfg/inventario/*"
-        1:
-            group: "reservas"
-            display-name: "Reservas"
-            paths-to-match: "/tfg/reservas/*"
-    swagger-ui:
-        config-url: /v3/api-docs/swagger-config
-        url: /v3/api-docs
-        urls:
-            0:
-                name: Inventario
-                url: http://localhost:8081/v3/api-docs/inventario
-            1:
-                name: Reservas
-                url: /v3/api-docs/reservas
-
-       
+  enable-native-support: true
+  api-docs:
+    groups:
+      enabled: true
+  group-configs:
+    - group: "inventario"
+      display-name: "Inventario"
+      paths-to-match: "/tfg/inventario/**"  # Asegúrate de que coincida con la ruta en el Gateway
+    - group: "reservas"
+      display-name: "Reservas"
+      paths-to-match: "/tfg/reservas/**"
+    - group: "pagos"
+      display-name: "Pagos"
+      paths-to-match: "/tfg/pagos/**"
+    - group: "gps"
+      display-name: "GPS"
+      paths-to-match: "/tfg/gps/**"
+  swagger-ui:
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - name: Inventario
+        url: /tfg/inventario/v3/api-docs  # Esta URL debe redirigir al servicio de inventario
+      - name: Reservas
+        url: /tfg/reservas/v3/api-docs  # Esta URL debe redirigir al servicio de reservas
+      - name: Pagos
+        url: /tfg/pagos/v3/api-docs      # Esta URL debe redirigir al servicio de pagos
+      - name: GPS
+        url: /tfg/gps/v3/api-docs        # Esta URL debe redirigir al servicio de GPS
 
             
             

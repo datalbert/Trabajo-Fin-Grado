@@ -27,7 +27,8 @@ public class Transacciones {
 
     private String id_pagador;
 
-    private int id_reserva;
+    @Column(name="id_reserva")
+    private int idReserva;
 
     private String email;
     

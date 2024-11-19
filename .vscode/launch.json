@@ -70,6 +70,26 @@
             "projectName": "gatewayserver",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-MensajesApplication<mensajes>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "trabajotfg.mensajes.MensajesApplication",
+            "projectName": "mensajes",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-PagoApplication<pago>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "trabajotfg.pago.PagoApplication",
+            "projectName": "pago",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
