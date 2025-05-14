@@ -1,0 +1,189 @@
+services:
+  inventariodb:
+    image: "mysql:latest"
+    container_name: inventario-db-ms
+    environment:
+      MYSQL_DATABASE: 'inventariodb'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'root'
+      MYSQL_ROOT_PASSWORD: 'root'
+    extends:
+      file: common.yml
+      service: network-deploy-service
+      
+    ports:
+      - "3307:3306"
+    
+  reservasdb:
+    image: "mysql:latest"
+    container_name: reservas-db-ms
+    environment:
+      MYSQL_DATABASE: 'reservasdb'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'root'
+      MYSQL_ROOT_PASSWORD: 'root'
+    extends:
+      file: common.yml
+      service: network-deploy-service
+      
+    ports:
+      - "3308:3306"
+  
+  pagosdb:
+    image: "mysql:latest"
+    container_name: pagos-db-ms
+    environment:
+      MYSQL_DATABASE: 'transacciones'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'root'
+      MYSQL_ROOT_PASSWORD: 'root'
+    extends:
+      file: common.yml
+      service: network-deploy-service
+      
+    ports:
+      - "3309:3306"
+  
+  configserver:
+    image: "datalbert/configserver:2.0"
+    container_name: configserver-ms
+    ports:
+      - "8888:8888"
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8888/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    extends:
+      file: common.yml
+      service: network-deploy-service
+  
+  eurekaserver:
+    image: "datalbert/eurekaserver:2.0"
+    container_name: eurekaserver-ms
+    ports:
+      - "8070:8070"
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8070/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    environment:
+      SPRING_APPLICATION_NAME: eurekaserver
+    extends:
+      file: common.yml
+      service: microservice-configserver
+  
+  gatewayserver:
+    image: "datalbert/gatewayserver:2.0"
+    container_name: gatewayserver-ms
+    ports:
+      - "8071:8071"
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8080/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    environment:
+      SPRING_APPLICATION_NAME: gatewayserver
+    extends:
+      file: common.yml
+      service: microservice-eurekaserver
+  
+  inventario:
+    image: "datalbert/inventario:2.0"
+    container_name: inventario-ms
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8081/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    environment:
+      SPRING_APPLICATION_NAME: inventario
+    extends:
+      file: common.yml
+      service: microservice-eurekaserver
+    
+  reservas:
+    image: "datalbert/reservas:2.0"
+    container_name: reservas-ms
+    ports:
+      - "8082:8082"
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8082/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    environment:
+      SPRING_APPLICATION_NAME: reservas
+    extends:
+      file: common.yml
+      service: microservice-eurekaserver
+  
+  pagos:
+    image: "datalbert/pago:2.0"
+    container_name: pagos-ms
+    ports:
+      - "9090:9090"
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8083/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    environment:
+      SPRING_APPLICATION_NAME: pago
+    extends:
+      file: common.yml
+      service: microservice-eurekaserver
+    
+  gps:
+    image: "datalbert/gps:2.0"
+    container_name: gps-ms
+    ports:
+      - "8083:8083"
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8084/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    environment:
+      SPRING_APPLICATION_NAME: gps
+    extends:
+      file: common.yml
+      service: microservice-eurekaserver
+  
+  mensajes:
+    image: "datalbert/mensajes:2.0"
+    container_name: mensajes-ms
+    ports:
+      - "8086:8086"
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8086/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    environment:
+      SPRING_APPLICATION_NAME: mensajes
+    extends:
+      file: common.yml
+      service: microservice-eurekaserver
+    
+networks:
+  trabajo_final:
+    driver: bridge  
+    
+
+
+    
+
+  

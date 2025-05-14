@@ -15,7 +15,7 @@ import trabajotfg.gps.dto.ResponseDTO;
 public interface InventarioClient {
 
     //definimos los método que vamos a llamar
-    @RequestMapping(method = RequestMethod.PUT, value = "coches/{idvehiculo}/estado")
+    @RequestMapping(method = RequestMethod.PUT, value = "/coches/{idvehiculo}/estado")
     public ResponseEntity<ResponseDTO> actualizarEstado(@PathVariable int idvehiculo, @RequestBody String estado);
 
     @RequestMapping(method = RequestMethod.GET, value = "/coches/matricula/{matricula}")

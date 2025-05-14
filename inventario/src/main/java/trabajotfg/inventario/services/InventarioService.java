@@ -28,9 +28,11 @@ public interface InventarioService {
 
     List<InventarioDto> obtenerDisponibles();
 
+    List<InventarioDto> obtenerDisponiblesFechas(String fechainicio, String fechafin);
+
     void modificarEstado(int id, String estado);
 
-    List<InventarioDto> searchcarsByFilters(String marca, String modelo, String combustible, String transmision, String numAsientos);
+    List<InventarioDto> searchcarsByFilters(String marca, String modelo, String combustible, String transmision,Integer numAsientos);
 
     
     

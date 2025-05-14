@@ -2,55 +2,15 @@ spring:
     application:
         name: reservas
     profiles:
-        active: dev
+        active:
+            - default
     
     config:
-        #import: "optional:configserver:http://configserver-ms:8888/"
-        import: "optional:configserver:http://localhost:8888/"
+        import: "optional:configserver:http://configserver-container:8888/"
+        #import: "optional:configserver:http://localhost:8888/"
 
-    cloud:
-        function:
-            definition: sendEmail;sendInventarioConfirmation;sendPagoConfirmation
+    
 
-        stream:
-          bindings:
-            sendEmail-out-0:
-              destination: send-email
-            sendInventarioConfirmation-out-0:
-              destination: inventario-confirmation
-            sendPagoConfirmation-in-0:
-              destination: pago-confirmation
-            
-          kafka:
-            binder:
-              brokers: 
-                - localhost:9092
-              
-
-eureka:
-  instance:
-    preferIpAddress: true
-  client:
-    fetchRegistry: true
-    registerWithEureka: true
-    serviceUrl:
-        #defaultZone: http://eurekaserver-ms:8070/eureka/
-        defaultZone: http://localhost:8070/eureka/
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  health:
-    readinessstate: 
-      enabled: true
-    livenessstate:
-      enabled: true
-  endpoint:
-    health:
-      probes:
-        enabled: true
 
 
 

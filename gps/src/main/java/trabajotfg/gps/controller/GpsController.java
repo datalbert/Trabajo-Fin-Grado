@@ -54,7 +54,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.Collections;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PutMapping;
-;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 
 
 @RestController
@@ -81,7 +84,7 @@ public class GpsController {
 
     private ReservasClient reservasClient;
 
-    private final String url = "http://localhost:1026/v2/entities";
+    private final String url = "http://orion-fiware:1026/v2/entities";
 
     @Operation(summary = "Crear una nueva entidad en FIWARE")
     @ApiResponse(
@@ -258,7 +261,7 @@ public class GpsController {
         //1º Inventario para actualizar el estado del coche a DISPONIBLE
         ResponseEntity<ResponseDTO> inventarioestado=inventarioClient.actualizarEstado(entity.getIdVehiculo(), "DISPONIBLE");
         //2º Reservas para actualizar la reserva a finalizada
-        ResponseEntity<ResponseDTO> reservasestado=reservasClient.actualizarEstadoReserva(entity.getIdReserva());
+        ResponseEntity<ResponseDTO> reservasestado=reservasClient.actualizarEstadoReserva(entity.getIdReserva(), "FINALIZADA");
         
         String url_update= url+"/"+entity.getMatricula()+"/attrs";
 
@@ -342,34 +345,20 @@ public class GpsController {
                 //entityId será la matricula
                 //LLamar a un método que se encarge de finalizar la reserva 
                 gpsService.finalizarReserva(entityId);
-                // Recorre los atributos de la entidad
-                /* 
-                entity.forEach((key, value) -> {
-                    if (!"id".equals(key) && !"type".equals(key)) {
-                        // Procesa cada atributo dinámicamente
-                        Map<String, Object> attribute = (Map<String, Object>) value;
-                        String attributeType = (String) attribute.get("type");
-                        Object attributeValue = attribute.get("value");
-
-                        System.out.println("Atributo: " + key + " | Tipo: " + attributeType + " | Valor: " + attributeValue);
-
-                        // Aquí puedes realizar el procesamiento necesario según el atributo
-                    }
-                });
-                */
+                
             });
         }
     }
 
-    @PostMapping("/subscripcion/{matricula}/{fecha}")
+    @PostMapping("/subscripcion/{matricula}")
     //este método para crear la subscripción de un vehiculo recibe la matricula del vehiculo
-    public String crearSubscripcion(@PathVariable("matricula") String matricula, @PathVariable("fecha") String fecha) {
+    public String crearSubscripcion(@PathVariable("matricula") String matricula) {
         //TODO: process POST request
         
         String url_subscription="http://localhost:1026/v2/subscriptions";
 
         JSONObject subscription = new JSONObject();
-        subscription.put("description", "Notificación de cambios en la posición del carro " + matricula);
+        subscription.put("description", "Notificación de cambios en la posición del coche " + matricula);
 
         JSONObject subject = new JSONObject();
         JSONArray entities = new JSONArray();
@@ -386,14 +375,16 @@ public class GpsController {
         subject.put("condition", condition);
         subscription.put("subject", subject);
 
+
         JSONObject notification = new JSONObject();
         JSONObject http = new JSONObject();
-        http.put("url", "http://192.168.1.85:8083/notificacion");
+        String url_notificacion="http://192.168.1.66:8083/notificacion";
+        http.put("url", url_notificacion);
         notification.put("http", http);
         notification.put("attrs", attrs);
         subscription.put("notification", notification);
 
-        subscription.put("expires",fecha+"T23:59:59.00Z");
+        //subscription.put("expires",fecha+"T23:59:59.00Z");
         subscription.put("throttling", 5);
 
         HttpHeaders headers = new HttpHeaders();

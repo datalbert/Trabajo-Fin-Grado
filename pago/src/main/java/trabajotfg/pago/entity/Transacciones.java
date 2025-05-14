@@ -23,7 +23,8 @@ import java.time.LocalDateTime;
 public class Transacciones {
 
     @Id
-    private String id_transaccion;
+    @Column(name = "id_transaccion")
+    private String idTransaccion;
 
     private String id_pagador;
 

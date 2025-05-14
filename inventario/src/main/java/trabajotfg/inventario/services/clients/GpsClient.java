@@ -26,6 +26,10 @@ public interface GpsClient {
 
     @GetMapping(value="{latitud}/{longitud}/{radio}")
     List<EntityDTO> filtrarporUbicacion(@PathVariable("latitud")String latitud, @PathVariable("longitud")String longitud, @PathVariable("radio")String radio);
+
+    //este método para crear la subscripción de un vehiculo recibe la matricula del vehiculo
+    @RequestMapping(method = RequestMethod.POST, value = "/subscripcion/{matricula}")
+    public String crearSubscripcion(@PathVariable("matricula") String matricula);
     
 
 }

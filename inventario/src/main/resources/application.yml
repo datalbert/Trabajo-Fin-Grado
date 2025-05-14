@@ -2,45 +2,13 @@ spring:
   application:
       name: inventario
   profiles:
-      active: dev
+    active:
+      - default
   config:
-        #import: "optional:configserver:http://configserver-ms:8888/"
-        import: "optional:configserver:http://localhost:8888/"
-  cloud:
-    function:
-        definition: sendInventarioConfirmation
-    stream:
-      bindings:
-        sendInventarioConfirmation-in-0:
-          destination: inventario-confirmation
-      kafka:
-        binder:
-          brokers: 
-            - localhost:9092
+       import: "optional:configserver:http://configserver-container:8888/"
+      #import: "optional:configserver:http://localhost:8888/"
+  
 
-#eureka:
- # instance:
-  #  preferIpAddress: true
-  #client:
-   # fetchRegistry: true
-    #registerWithEureka: true
-    #serviceUrl:
-        #defaultZone: http://eurekaserver-ms:8070/eureka/
-     #   defulttZone: http://localhost:8070/eureka/
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  health:
-    readinessstate: 
-      enabled: true
-    livenessstate:
-      enabled: true
-  endpoint:
-    health:
-      probes:
-        enabled: true
     
                        

@@ -26,8 +26,8 @@ public class CochesSpecification {
 
     }
 
-    public static Specification<Coches> withNumAsientos(String numAsientos){
-        return (root, query, builder) -> builder.like(root.get("numAsientos"), "%" + numAsientos + "%");
+    public static Specification<Coches> withNumAsientos(int numAsientos){
+        return (root, query, builder) -> builder.equal(root.get("numAsientos"), numAsientos);
     }
 
     public static Specification<Coches> withEstado(String estado) {
@@ -39,7 +39,7 @@ public class CochesSpecification {
 
 
     public static Specification<Coches> conditionalSearch(String marca, String modelo, String combustible, String transmision,
-     String numAsientos, String estado){
+     Integer numAsientos, String estado){
         //comprobamos que los campos no esten vacios
 
         Specification<Coches> specification = null;
@@ -72,7 +72,7 @@ public class CochesSpecification {
             }
         }
 
-        if(numAsientos != null && !numAsientos.isEmpty()){
+        if(numAsientos != null){
             if(specification != null){
                 specification = specification.and(withNumAsientos(numAsientos));
             }else{
@@ -84,7 +84,7 @@ public class CochesSpecification {
             if (specification != null) {
                 specification = specification.and(withEstado(estado));
             } else {
-            specification = specification.and(withEstado(estado));
+                specification = withEstado(estado);
             }
         } 
 

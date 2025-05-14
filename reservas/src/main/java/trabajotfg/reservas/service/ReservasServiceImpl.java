@@ -71,7 +71,8 @@ public class ReservasServiceImpl  implements ReservasService{
 
         //creao la subscripcion del coche reservado
         //comprobar si la fecha fin esta no vacia
-        String respuesta=gpsClient.crearSubscripcion(reserva.getMatricula(), reserva.getFechaFin());
+        
+        //String respuesta=gpsClient.crearSubscripcion(reserva.getMatricula(), reserva.getFechaFin()); 
 
 
         Pagos pago= new Pagos();
@@ -271,6 +272,7 @@ public class ReservasServiceImpl  implements ReservasService{
     @Override
     public int obtenerReservaPorIdVehiclo(int idVehiculo) {
         // TODO Auto-generated method stub
+        
         Reservas reserva=reservasRepository.findByIdVehiculo(idVehiculo);
 
         return reserva.getIdreserva();
@@ -280,6 +282,7 @@ public class ReservasServiceImpl  implements ReservasService{
     @Override
     public Reservas obtenerReservaPorIdVehiculo(int id) {
         // TODO Auto-generated method stub
+        //obtener las reservasd por idvehiculo y estado sea ACTIVA
         return reservasRepository.findByIdVehiculo(id);
     }
 
@@ -298,6 +301,22 @@ public class ReservasServiceImpl  implements ReservasService{
 
             return rentalsPerMonth;
         }
+
+
+    @Override
+    public List<Integer> obtenerReservasPorFecha(String fecha_inicio, String fecha_fin) {
+        // TODO Auto-generated method stub
+        List<Integer> coches_reservados = new ArrayList<>();
+        try {
+            Date fecha_inicial = new SimpleDateFormat("yyyy-MM-dd").parse(fecha_inicio);
+            Date fecha_final = new SimpleDateFormat("yyyy-MM-dd").parse(fecha_fin);
+            coches_reservados= reservasRepository.findByFechaBetween(fecha_inicial, fecha_final);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return coches_reservados;
+    }
     
     
 

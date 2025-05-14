@@ -100,7 +100,7 @@ public class PaypalServiceImpl implements PaypalService {
         //Persistimos los datos en la base de datos
         Transacciones transaccion = new Transacciones();
         transaccion=TransaccionesMapped.maptoEntity(order, transaccion);
-        transaccion.setId_transaccion(id_payment);
+        transaccion.setIdTransaccion(id_payment);
         transaccion.setEstado("PENDIENTE");
         transaccionesRepository.save(transaccion);
 
@@ -114,7 +114,7 @@ public class PaypalServiceImpl implements PaypalService {
         Transacciones transaccion=transaccionesRepository.findByIdReserva(id_reserva);
 
         //fetch id_transaccion from database
-        String id_transaccion=transaccion.getId_transaccion();
+        String id_transaccion=transaccion.getIdTransaccion();
 
         //Retrieve the payment to get the sale details
 
@@ -198,6 +198,12 @@ public class PaypalServiceImpl implements PaypalService {
          System.out.println("Mensaje enviado a la cola de mensajes: "+result);
 
 
+    }
+
+    @Override
+    public Optional<Transacciones> obtenerTransaccionById(String paymentId) {
+        // TODO Auto-generated method stub
+        return transaccionesRepository.findByIdTransaccion(paymentId);
     }
 
 }

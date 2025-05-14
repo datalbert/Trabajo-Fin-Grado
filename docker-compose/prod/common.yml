@@ -1,0 +1,31 @@
+services:
+  network-deploy-service:
+    networks:
+      - trabajo_final
+  
+  base-config:
+    extends:
+      service: network-deploy-service
+  
+  microservice-configserver:
+    extends:
+      service: base-config
+    depends_on:
+      configserver:
+        condition: service_healthy
+    enviroment:
+      - SPRING_PROFILES_ACTIVE: default
+      - SPRING_CONFIG_IMPORT: configserver:http://configserver:8888/
+  
+  microservice-eurekaserver:
+    extends:
+      service: microservice-configserver
+    
+    depends_on:
+      eurekaserver:
+        condition: service_healthy
+      
+    enviroment:
+      - SPRING_PROFILES_ACTIVE: default
+      - _CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+      

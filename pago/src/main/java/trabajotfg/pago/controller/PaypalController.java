@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import trabajotfg.pago.service.PaypalService;
 
 import java.lang.ProcessBuilder.Redirect;
+import java.util.Optional;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import trabajotfg.pago.dto.OrderDto;
+import trabajotfg.pago.entity.Transacciones;
 
 
 
@@ -78,7 +80,7 @@ public class PaypalController {
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))
         )
     })
-    @PostMapping()
+    @PostMapping("/payment")
     public String createPayment(
         @Parameter(description = "Objeto OrderDto que contiene los detalles de la orden", required = true)
         @RequestBody OrderDto order) {
@@ -129,9 +131,11 @@ public class PaypalController {
 
                 //enviamos a la cola el mensaje de aceptado
                 paypalService.escribirEnCola(paymentId, "Aceptado");
+
+                Optional<Transacciones> transaccion_realizada=paypalService.obtenerTransaccionById(paymentId);
                 
                 // Redireccionar al frontend
-                redirectView.setUrl("http://localhost:4200/pago?id_transaccion="+paymentId+"&precio=100&fecha=2024-10-10");
+                redirectView.setUrl("http://localhost:4200/pago?id_transaccion="+paymentId+"&precio="+transaccion_realizada.get().getMonto()+"&fecha="+transaccion_realizada.get().getDescripcion_metodo_pago());
 
 
             } else {
@@ -198,7 +202,7 @@ public class PaypalController {
             content = @Content(mediaType = "application/json")
         )
     })
-    @DeleteMapping("/refund")
+    @DeleteMapping("/payment/refund")
     public String cancelarReserva(
         @Parameter(name = "id_reserva", description = "ID de la reserva que se quiere reembolsar", required = true, example = "123")
         @RequestParam("id_reserva") int idreserva, 

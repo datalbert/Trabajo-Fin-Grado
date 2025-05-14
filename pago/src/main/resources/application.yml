@@ -2,20 +2,11 @@ spring:
     application:
         name: pago
     profiles:
-        active: dev
+        active:
+            - default
     config:
-        import: "optional:configserver:http://localhost:8888/"
-    cloud:
-      function:
-        definition: sendPagoConfirmation
-      stream:
-        bindings:
-          sendPagoConfirmation-out-0:
-            destination: pago-confirmation
-        kafka:
-          binder:
-            brokers:
-              - localhost:9092
+        import: "optional:configserver:http://configserver-container:8888/"
+    
 
 paypal:
     mode: sandbox
@@ -23,24 +14,4 @@ paypal:
     client-secret: ECof2AOBm33P04kw1vC8O6HqR2V6qSST-SYXWJg2uyH0rt6KGaT24wMIT33U4_aq4sn2qDhdZUwHEV0V
 
 
-eureka:
-  instance:
-    preferIpAddress: true
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8070/eureka/
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  health:
-    readinessstate: 
-      enabled: true
-    livenessstate:
-      enabled: true
-  endpoint:
-    health:
-      probes:
-        enabled: true

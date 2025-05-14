@@ -15,8 +15,8 @@ public interface GpsClient {
 
     
     //este método para crear la subscripción de un vehiculo recibe la matricula del vehiculo
-    @RequestMapping(method = RequestMethod.POST, value = "/subscripcion/{matricula}/{fecha}")
-    public String crearSubscripcion(@PathVariable("matricula") String matricula, @PathVariable("fecha") String fecha);
+    @RequestMapping(method = RequestMethod.POST, value = "/subscripcion/{matricula}")
+    public String crearSubscripcion(@PathVariable("matricula") String matricula);
 
     
 

@@ -16,7 +16,7 @@ services:
       - ./inventario-db.cnf:/etc/mysql/conf.d/my.cnf
       
     ports:
-      - "3307:3307"
+      - "3307:3306"
     
   usuariosdb:
     image: "mysql:latest"

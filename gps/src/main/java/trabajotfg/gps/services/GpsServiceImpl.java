@@ -68,11 +68,11 @@ public class GpsServiceImpl  implements GpsService {
             entidad_coche.getBody().getId(),
             "DISPONIBLE");
         
-        // obtenemos el identifivado de la reserva
+        // obtenemos el identifivado de la reserva y cuyo estado es ACTIVA
         int identificador_reserva=reservasClient.obtenerReservaPorIdVehiclo(entidad_coche.getBody().getId());
         
         //2º Reservas para actualizar la reserva a finalizada
-        ResponseEntity<ResponseDTO> reservasestado=reservasClient.actualizarEstadoReserva(identificador_reserva);
+        ResponseEntity<ResponseDTO> reservasestado=reservasClient.actualizarEstadoReserva(identificador_reserva,"FINALIZADA");
     }
 
 }

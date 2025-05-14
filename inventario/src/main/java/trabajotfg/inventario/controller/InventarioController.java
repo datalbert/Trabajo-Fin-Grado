@@ -77,7 +77,7 @@ public class InventarioController {
 
     @Operation(summary = "Insertar un nuevo coche")
     @ApiResponse(responseCode = "201", description = "Coche insertado correctamente")
-    @PostMapping("/nuevoCoche")
+    @PostMapping("/coches")
     public ResponseEntity<ResponseDTO> insertarNuevocoche(@RequestPart("nuevocoche")InventarioDto nuevocoche) throws IOException{
         //TODO: process POST request
 
@@ -202,6 +202,35 @@ public class InventarioController {
         return ResponseEntity.status(HttpStatus.OK).body(devolverlista);
     }
 
+    @Operation(summary = "Obtener el listado de los coches con estado disponibles")
+    @ApiResponses ( value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Lista de coches disponibles  del inventario",
+            content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = InventarioDto.class)))
+        ),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Coche no encontrado")
+    })
+    @GetMapping("/coches/disponibles/fecha")
+    public ResponseEntity<List<InventarioDto>> obtenerDisponiblesPorFechas(@RequestParam("fechainicio") String fechainicio, @RequestParam("fechafin") String fechafin){
+
+        List<InventarioDto> devolverlista=inventarioService.obtenerDisponiblesFechas(fechainicio, fechafin);
+
+        for (InventarioDto coche : devolverlista) {
+            //llamar al gps para obtener la localización de cada coche disponible
+            EntityDTO entity = gpsClient.obtenerEntidad(coche.getMatricula());
+            coche.setLatitud(entity.getLatitud());
+            coche.setLongitud(entity.getLongitud());
+        }
+        
+
+        return ResponseEntity.status(HttpStatus.OK).body(devolverlista);
+    }
+
+
+
     @Operation(summary = "Actualización del estado de un coche")
     @ApiResponse(
         responseCode = "200",
@@ -233,7 +262,7 @@ public class InventarioController {
         description = "Datos de entrada inválidos",
         content = @Content(mediaType = "application/json")
     )
-    @PutMapping
+    @PutMapping("coches")
     public  ResponseEntity<ResponseDTO> actualizarCoche(
         @Parameter(description = "Objeto InventarioDto con los datos actualizados del coche", required = true)
         @RequestBody InventarioDto nuevocoche) throws IOException{
@@ -326,8 +355,22 @@ public class InventarioController {
         @RequestParam(defaultValue="") String transmision, 
         @Parameter(description = "Número de asientos del coche para filtrar", example = "5")
         @RequestParam(defaultValue="") String numAsientos) {
-        List<InventarioDto> inventariocompleto = inventarioService.searchcarsByFilters(marca, modelo, combustible, transmision, numAsientos);
-        return ResponseEntity.status(HttpStatus.OK).body(inventariocompleto);
+            Integer asientosInt = null;
+            if (!numAsientos.isBlank()) {
+                try {
+                    asientosInt = Integer.parseInt(numAsientos);
+                } catch (NumberFormatException e) {
+                    // Aquí puedes manejar el error o ignorarlo para omitir el filtro
+                    return ResponseEntity.badRequest().build(); // si decides cortar
+                }
+            }
+        
+            List<InventarioDto> inventarioCompleto = inventarioService.searchcarsByFilters(
+                marca, modelo, combustible, transmision, asientosInt
+            );
+        return ResponseEntity.status(HttpStatus.OK).body(inventarioCompleto);
+        //List<InventarioDto> inventariocompleto = inventarioService.searchcarsByFilters(marca, modelo, combustible, transmision, numAsientos);
+        //return ResponseEntity.status(HttpStatus.OK).body(inventariocompleto);
         
     }
     

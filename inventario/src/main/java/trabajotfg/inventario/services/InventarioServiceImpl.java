@@ -14,6 +14,7 @@ import trabajotfg.inventario.mapped.InventarioMapped;
 import trabajotfg.inventario.repository.CochesRepository;
 import trabajotfg.inventario.repository.EstadoRepository;
 import trabajotfg.inventario.services.clients.GpsClient;
+import trabajotfg.inventario.services.clients.ReservasClient;
 import trabajotfg.inventario.specification.CochesSpecification;
 
 @Service
@@ -26,6 +27,8 @@ public class InventarioServiceImpl implements InventarioService{
 
     //cliente de GPS
     private GpsClient gpsClient;
+
+    private ReservasClient reservasClient;
 
     @Override
     public void eliminarCoche(int id) {
@@ -82,6 +85,9 @@ public class InventarioServiceImpl implements InventarioService{
 
         estadoRepository.save(estado);
 
+        //tenemos que crear tambiñen la subscripción en el GPS
+        gpsClient.crearSubscripcion(coche.getMatricula());
+
 
     }
 
@@ -132,7 +138,7 @@ public class InventarioServiceImpl implements InventarioService{
 
     @Override
     public List<InventarioDto> searchcarsByFilters(String marca, String modelo, String combustible, String transmision,
-            String numAsientos) {
+            Integer numAsientos) {
         // TODO Auto-generated method stub
         List<Coches> coches = cochesRepository.findAll(CochesSpecification.conditionalSearch(marca, modelo, combustible, transmision,
          numAsientos,"Disponible"));
@@ -161,6 +167,23 @@ public class InventarioServiceImpl implements InventarioService{
         return inventariocompleto;
 
         
+    }
+
+    @Override
+    public List<InventarioDto> obtenerDisponiblesFechas(String fechainicio, String fechafin) {
+        // TODO Auto-generated method stub
+        //Llamar a reserva para obtener los coches reservados en esas fechas
+        List<Integer> ids = reservasClient.obtenerReservasPorFecha(fechainicio, fechafin);
+
+        List<InventarioDto> inventariocompleto = new ArrayList<>();
+
+        for (Coches coches : cochesRepository.findAllByIdcocheNotIn(ids)) {
+            inventariocompleto.add(InventarioMapped.maptoDto(coches, new InventarioDto()));
+        }
+
+        return inventariocompleto;
+
+
     }
 
    

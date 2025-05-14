@@ -81,7 +81,7 @@ public class ReservasController {
                 schema = @Schema(implementation = ResponseDTO.class)
             )
         )
-    @PostMapping
+    @PostMapping("/reservas")
     public ResponseEntity<ResponseDTO> crearReserva(@RequestBody ReservasDto reserva){
         
         String url_pago=reservasService.crearReserva(reserva);
@@ -228,6 +228,12 @@ public class ReservasController {
         example = "1",
         required = true
     )
+    @Parameter(
+        name = "estado",
+        description = "Nuevo estado de la reserva",
+        example = "Finalizado",
+        required = true
+    )
     @ApiResponse(
         responseCode = "200",
         description = "Estado de la reserva actualizado correctamente",
@@ -236,10 +242,10 @@ public class ReservasController {
             schema = @Schema(implementation = ResponseDTO.class)
         )
     )
-    @PutMapping("/reservas/{id}")
-    public ResponseEntity<ResponseDTO> actualizarEstadoReserva(@PathVariable("id") int id){
+    @PutMapping("/reservas/{id}/{estado}")
+    public ResponseEntity<ResponseDTO> actualizarEstadoReserva(@PathVariable("id") int id,@PathVariable("estado") String estado){
         
-        reservasService.actualizarEstado(id,"FINALIZADO");
+        reservasService.actualizarEstado(id, estado);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(ReservasConstant.HTTP_STATUS_OK, ReservasConstant.HTTP_STATUS_OK_MESSAGE));
     }
 
@@ -261,7 +267,7 @@ public class ReservasController {
             schema = @Schema(type = "integer", description = "ID de la reserva activa")
         )
     )
-    @GetMapping("/reserva/{idvehiculo}")
+    @GetMapping("/reservas/{idvehiculo}")
     public int obtenerReservaPorIdVehiclo(@PathVariable("idvehiculo") int idvehiculo){
 
         Reservas reserva=reservasService.obtenerReservaPorIdVehiculo(idvehiculo);
@@ -269,11 +275,18 @@ public class ReservasController {
         return reserva.getIdreserva();
     }
 
-    @GetMapping("/reserva/estadisticas/alquilados")
+    @GetMapping("/reservas/estadisticas/alquilados")
     public ResponseEntity<Map<Integer, Integer>> obtenerestadisticasPorMeses(@RequestParam("email") String email) {
         Map<Integer,Integer> reservasPorMeses=reservasService.obtenerEstadisticasPorCliente(email);
         return ResponseEntity.status(HttpStatus.OK).body(reservasPorMeses);
     }
+
+    @GetMapping("/reservas/fecha")
+    public ResponseEntity<List<Integer>> obtenerReservasPorFecha(@RequestParam("fecha_inicio") String fecha_inicio ,@RequestParam("fecha_fin") String fecha_fin){
+        List<Integer> vehiculos_reservados=reservasService.obtenerReservasPorFecha(fecha_inicio, fecha_fin);
+        return ResponseEntity.status(HttpStatus.OK).body(vehiculos_reservados);
+    }
+
     
     
 

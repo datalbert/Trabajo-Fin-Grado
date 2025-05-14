@@ -20,6 +20,7 @@ public interface ReservasRepository  extends JpaRepository<Reservas, Integer>{
 
     List<Reservas> findByEmailcliente(String email);
 
+    @Query("SELECT r FROM Reservas r WHERE r.idVehiculo = :idVehiculo AND r.estado = 'ACTIVA'")
     Reservas findByIdVehiculo(int idVehiculo);
 
     @Query(value = "SELECT MONTH(fecha_inicio) AS mes, COUNT(id_vehiculo) AS num_vehiculos " +
@@ -28,6 +29,9 @@ public interface ReservasRepository  extends JpaRepository<Reservas, Integer>{
     "GROUP BY MONTH(fecha_inicio) " +
     "ORDER BY MONTH(fecha_inicio)", nativeQuery = true)
 List<Object[]> findVehiclesRentedByUserPerMonth(@Param("email") String email);
+
+    @Query("SELECT r.idVehiculo FROM Reservas r WHERE r.estado = 'Completado' AND (r.fecha_inicio >= :fechainicial OR r.fecha_fin >= :fechafinal)")
+    List<Integer> findByFechaBetween(@Param("fechainicial") Date fechainicial, @Param("fechafinal") Date fechafinal);
 
     
 

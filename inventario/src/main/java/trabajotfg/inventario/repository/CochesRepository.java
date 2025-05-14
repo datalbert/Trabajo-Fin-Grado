@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import trabajotfg.inventario.entity.Coches;
 
@@ -19,7 +21,10 @@ public interface CochesRepository extends JpaRepository<Coches, Integer>, JpaSpe
 
    List<Coches> findByEmailpropietario(String emailpropietario);
 
+    @Query("SELECT c FROM Coches c WHERE c.idcoche NOT IN :ids")
+    List<Coches> findAllByIdcocheNotIn(@Param("ids") List<Integer> ids);
 
-
-    
+   
 }
+    
+

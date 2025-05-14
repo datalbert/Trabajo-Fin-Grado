@@ -1,9 +1,12 @@
 spring:
     application:
         name: "eurekaserver"
+    profiles:
+      active:
+        - default
     config:
-        #import: "optional:configserver:http://configserver-ms:8888/"
-        import: "optional:configserver:http://localhost:8888/"
+        
+        import: "optional:configserver:http://configserver-container:8888/"
 
 management:
   endpoints:

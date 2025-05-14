@@ -33,6 +33,8 @@ public interface ReservasService {
 
     List<ReservasDto> obtenerReservasPorEmail(String email);
 
+    List<Integer> obtenerReservasPorFecha(String fecha_inicio,String fecha_fin);
+
     Reservas obtenerReservaPorIdVehiculo(int id);
 
     boolean comprobarFechas(Date fecha_inicio, Time hora_inicio);

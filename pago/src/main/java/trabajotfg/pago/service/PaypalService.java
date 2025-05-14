@@ -4,7 +4,7 @@ import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -22,6 +22,7 @@ import com.paypal.base.rest.PayPalRESTException;
 
 import lombok.RequiredArgsConstructor;
 import trabajotfg.pago.dto.OrderDto;
+import trabajotfg.pago.entity.Transacciones;
 
 
 public interface PaypalService {
@@ -33,6 +34,8 @@ public interface PaypalService {
     public void  escribirEnCola(String paymentId, String estado);
 
     public void pagoCancelado(int id_reserva, String estado);
+
+    public Optional<Transacciones> obtenerTransaccionById(String paymentId);
 
     public Payment createPayment2(OrderDto order,String cancelUrl, String successUrl) throws PayPalRESTException;
 
